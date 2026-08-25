@@ -1,6 +1,7 @@
 ---
 name: comment-sweep
 description: Batched comment cleanup across a codebase or a directory, using the Comment Sicko agent. Surveys comment volume, proposes reviewable batches, and commits each one separately. Only runs when explicitly invoked.
+argument-hint: "[path ...] (default: whole repo)"
 disable-model-invocation: true
 ---
 
@@ -16,14 +17,29 @@ For a single diff or one small directory, this is overkill - use the `nocomments
 
 ## 1. Survey before proposing anything
 
-Work out where the comments actually are. Adapt the globs to the repo's languages.
+**With no arguments, survey the whole repo.** Any paths the user passes are the scope
+instead; skip discovery and survey only those.
 
-    # comment lines and file count per top-level source directory
-    for d in <source dirs>; do
-      printf "%-28s %6s lines %5s files\n" "$d" \
-        "$(grep -rhoE '^\s*(//|/\*|\*|#)' "$d" --include='*.ts' --include='*.tsx' 2>/dev/null | wc -l)" \
-        "$(find "$d" -name '*.ts' -o -name '*.tsx' | wc -l)"
-    done
+Discover the source roots rather than assuming a layout:
+
+- Read the agent instructions (`AGENTS.md`, `CLAUDE.md`) for a stated project structure.
+- Otherwise take the top-level directories tracked by git, minus anything ignored:
+  `git ls-files | grep / | cut -d/ -f1 | sort -u`
+  (the `grep /` keeps directories only; without it you get top-level files too). Drop `docs`, `public`, `assets`, `scripts`,
+  generated output and vendored code.
+- In a monorepo, go one level deeper (`packages/*`, `apps/*`) so batches stay small.
+
+Detect languages from the extensions actually present, and match comment syntax to them -
+`//` and `/* */` for JS/TS/Swift/Java, `#` for Python/Ruby/shell, `<!-- -->` for markup.
+Do not assume TypeScript.
+
+Then, per directory, count comment lines and files. Something like, with the globs adapted:
+
+    grep -rhoE '^\s*(//|/\*|\*)' "$d" --include='*.ts' --include='*.tsx' | wc -l
+    find "$d" \( -name '*.ts' -o -name '*.tsx' \) | wc -l
+
+Exclude generated files - anything gitignored, plus `*.gen.*`, `*.generated.*`, snapshots
+and lockfiles. Deleting comments from generated code is churn that regenerates.
 
 Also count suppressions (`@ts-ignore`, `@ts-expect-error`, `eslint-disable`). If there are
 only a handful, say so - that half of the job is already done and should not be oversold.
