@@ -113,6 +113,16 @@ reach for it twice.
 Note it does NOT bring any sub-agent the skill spawns. `no-comments`, for example, needs
 the `Comment Sicko` agent, which is kept in `agents/` for that reason.
 
+## Locally authored skills
+
+Skills you write yourself have no upstream, so they are **committed** rather than rebuilt.
+`.gitignore` uses `skills/*` with a `!skills/<name>/` exception per local skill - git
+cannot re-include a path whose parent directory is excluded, so `skills/` alone would not
+work. They do not appear in `.skill-lock.json` or `skills.manifest`; they arrive with the
+clone instead, and `npx skills update` leaves them alone.
+
+Current: `comment-sweep`.
+
 ## prompts/
 
 Jobs that do not justify an installed skill live in `prompts/` as paste-able text, saved
