@@ -5,6 +5,7 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
+      cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
       skills/          29 skill dirs        -> Claude Code, Cursor, Codex
       commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           1 sub-agent         -> Claude Code, Cursor
@@ -94,10 +95,17 @@ Per repo:
 An import stub is used rather than a symlink so Claude-specific lines can be added
 alongside the shared ones if ever needed.
 
-**Cursor's global rules are not a file.** They live in Cursor Settings > Rules > User,
-stored in app config, so they cannot be symlinked here. Either paste the contents of
-`AGENTS.md` in there by hand, or rely on per-repo AGENTS.md, which the Cursor CLI reads
-natively alongside `.cursor/rules`.
+**Cursor's global rules are not a file.** They live in Cursor's Customize panel > Rules >
+User Rules, stored in app config, so they cannot be symlinked here. Set the scope dropdown
+to your own name, then `+ New`.
+
+That input is a single-line style field, so the `AGENTS.md` table does not survive it.
+`cursor-user-rule.txt` holds the same content flattened to one paragraph - paste that file
+verbatim. **It is a hand-maintained rendering, not a generated one:** edit `AGENTS.md` and
+you must update `cursor-user-rule.txt` to match, then re-paste. Nothing checks this.
+
+Per-repo `AGENTS.md` still works underneath, read natively by the Cursor CLI and IDE
+alongside `.cursor/rules`, and stacks with the user rule rather than replacing it.
 
 Use `.cursor/rules/*.mdc` only for things other tools cannot express, such as glob-scoped
 auto-attach rules.
@@ -167,7 +175,7 @@ constantly. Use the CLIs:
     claude mcp add [--transport http] <name> <commandOrUrl> [args...]
     claude mcp list
     codex mcp add|list|remove
-    # Cursor: edit ~/.cursor/mcp.json directly, or Settings > MCP
+    # Cursor: edit ~/.cursor/mcp.json directly, or Customize > MCPs
 
 **Never commit MCP config.** Some servers carry tokens in `env`, which is the reason this
 layer stays out of the repo while skills and commands do not.
@@ -205,8 +213,8 @@ and rebuilt from `skills.manifest`.
 and relinks `second-opinion`, writes the global instruction files, and runs `sync.sh`.
 Idempotent - re-run any time to repair drift.
 
-After bootstrap, one manual step remains: paste `AGENTS.md` into
-Cursor Settings > Rules > User.
+After bootstrap, one manual step remains: paste `AGENTS.md` into Cursor's Customize panel
+> Rules > User Rules.
 
 `skills.manifest` is regenerated automatically by `sync.sh` from `.skill-lock.json`, so it
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds

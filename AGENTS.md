@@ -1,12 +1,15 @@
 # Global agent instructions
 
 Canonical file: `~/.agents/AGENTS.md`. Symlinked to `~/.codex/AGENTS.md` and imported by
-`~/.claude/CLAUDE.md`, so every tool reads this one file. Edit it here.
+`~/.claude/CLAUDE.md`, so those tools read this one file. Edit it here.
+
+Cursor is the exception: its global rules are app config, not a file, so this content is
+pasted by hand into Cursor's Customize panel > Rules > User Rules. Re-paste it when this
+file changes.
 
 ## Conventions
 
 - Handoff documents go in `~/handoffs/<slug>.md`. Not the workspace, not `$TMPDIR`.
-- British English: colour, whilst, licence, behaviour, summarise. £ not $.
 
 ## Skills that must be asked for
 
@@ -19,7 +22,7 @@ be asked.
 | Before designing a feature or module | `grill-with-docs` |
 | Ending a session with work unfinished | `handoff` |
 | An explanation did not land | `wait-what` |
-| A diff has grown noisy comments or suppressions | `no-comments` |
+| A diff has grown noisy comments or suppressions | `comment-sweep` |
 | Deciding where a module boundary goes | `improve-codebase-architecture` |
 | Choosing a frontend library | `pick-ui-library` |
 | Exploring what a piece of UI should look like | `prototype` |

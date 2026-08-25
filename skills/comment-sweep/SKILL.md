@@ -15,8 +15,10 @@ stop and say so rather than improvising a substitute.
 ## Two modes
 
 **Single pass.** If the scope is one directory under ~150 files, an explicit file list, or
-the current diff, skip straight to section 4 and run it once. No survey, no batch plan, no
-branch, no confirmation round. Say which mode you picked in one line, then get on with it.
+the current diff, skip straight to section 4 and run it once. No batch plan, no branch. Do
+still count the comment lines in scope: the kill-rate gate in step 4.6 applies here exactly
+as it does in a sweep, and it needs the denominator. Say which mode you picked in one line,
+then get on with it.
 
 **Sweep.** Anything larger, or no argument at all, runs the full survey and batch plan
 below. This is the only safe way to handle thousands of comment lines, because the review
@@ -44,7 +46,10 @@ Do not assume TypeScript.
 
 Then, per directory, count comment lines and files. Something like, with the globs adapted:
 
-    grep -rhoE '^\s*(//|/\*|\*)' "$d" --include='*.ts' --include='*.tsx' | wc -l
+    grep -rhoE '^[[:space:]]*(//|/\*|\*)' "$d" --include='*.ts' --include='*.tsx' | wc -l
+
+Use `[[:space:]]`, not `\s`. `git grep -E` does not understand `\s` and silently reports
+roughly a sixteenth of the real count, which makes a batch look small enough to skip.
     find "$d" \( -name '*.ts' -o -name '*.tsx' \) | wc -l
 
 Exclude generated files - anything gitignored, plus `*.gen.*`, `*.generated.*`, snapshots
@@ -78,11 +83,21 @@ uses. If there isn't one, say so; the user is then reviewing without a safety ne
 
 1. Spawn `Task` with `subagent_type: "Comment Sicko"`. Give it the batch scope and tell it
    to review every file in scope, not just changed files. Do not restate its rules.
-2. Audit its report. Default to its judgement. Reject only: edits to application code
-   rather than comments, anything outside the batch scope, and deletions whose stated
-   reason is factually wrong. A comment survives ONLY with proof it documents something
-   that cannot be changed - a library bug, an external API quirk, a legal or licence
-   requirement. "It explains the code" is not proof. Where genuinely unsure, delete.
+2. Audit its report. The keep list lives in `~/.agents/agents/comment-sicko.md` and
+   nowhere else - read it if you do not already have it, and keep no second copy here. A
+   divergent copy silently overrules the agent.
+
+   Accept its confident kills. Decide every kill it branded `UNSURE` yourself, and keep
+   the ones a clause plausibly covers: Sicko deletes on doubt precisely so this step can
+   rescue, and this is the only thing between a sweep and a scorched-earth diff. Reject
+   outright three things - edits to application code rather than comments, anything
+   outside the batch scope, and deletions whose stated reason is factually wrong.
+
+   Check reasons in both directions. A comment that argues for its own survival is making
+   a claim, and a suppression's excuse is the only thing between its rule and the bug that
+   rule catches - read every surviving suppression against what its rule actually fires on.
+   A false excuse for keeping is exactly as wrong as a false reason for deleting, and it is
+   the one the sweep is built to miss.
 3. Apply the accepted deletions.
 4. **Comments only by default.** Do not fix workarounds, change application code, or
    encode constraints as types or lint rules during a sweep - that makes the diff
@@ -90,17 +105,23 @@ uses. If there isn't one, say so; the user is then reviewing without a safety ne
    in-batch if the user explicitly asked for it.
 5. Run the check command. If it fails, stop the sweep and report - do not continue into
    the next batch on a red tree.
-6. Commit this batch alone: `chore(comments): sweep <scope>` with the deletion count in
+6. Work out the kill rate: comments deleted as a percentage of the batch's comment lines.
+   Above 60%, show the user before committing. This is what the pilot batch was for - the
+   rate they accept there becomes the expected rate, and a later batch far above it is a
+   reason to stop rather than to press on.
+7. Commit this batch alone: `chore(comments): sweep <scope>` with the deletion count in
    the body.
-7. Report one line: scope, comments deleted, comments kept and why, check status.
+8. Report one line: scope, comments deleted, kill rate, comments kept and why, check
+   status.
 
 Then move to the next batch. Between batches, ask whether to continue if the last batch
 produced anything surprising.
 
 ## 5. Final report
 
-- Total deleted, per batch
-- Every comment kept, with the proof that saved it
+- Total deleted and the kill rate, per batch
+- Every comment kept, with the clause that saved it
+- Every `UNSURE` kill rescued at audit, so the next sweep can be tuned
 - Workarounds found but not fixed, as a follow-up list
 - Constraint comments that are still just prose, with the lint rule or type that would
   enforce each

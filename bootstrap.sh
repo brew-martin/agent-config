@@ -69,7 +69,7 @@ ok "~/.claude/CLAUDE.md (import stub - Claude Code does not read AGENTS.md nativ
 ln -sfn "$POOL/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ok "~/.codex/AGENTS.md -> pool"
 echo "  ! Cursor global rules are app config, not a file."
-echo "    Paste ~/.agents/AGENTS.md into Cursor Settings > Rules > User by hand."
+echo "    Paste ~/.agents/AGENTS.md into Customize > Rules > User Rules by hand."
 
 say "5. Link everything into the tools"
 "$POOL/sync.sh"
