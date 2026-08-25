@@ -114,7 +114,7 @@ The CLI manages skills only. Commands have no lockfile entry and are not covered
 This directory is a git repo. Skills are NOT committed - they are vendored from upstream
 and rebuilt from `skills.manifest`.
 
-    git clone <remote> ~/.agents
+    git clone git@github.com:brew-martin/agent-config.git ~/.agents
     ~/.agents/bootstrap.sh
 
 `bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a

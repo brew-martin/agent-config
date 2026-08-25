@@ -238,3 +238,8 @@ Also confirmed the CLI exits 0 on success despite printing
 "Failed to install 1 - PromptScript does not support global skill installation".
 That line is noise from a tool we do not use; bootstrap checks the directory exists rather
 than trusting the exit code.
+
+Remote: git@github.com:brew-martin/agent-config.git (private, brew-martin).
+Pushed after a secret scan over all tracked files - clean. Only identifiable content is
+the home path and the brewdigital/skills clone URL, both acceptable in a private repo.
+`skills/` and `.skill-lock.json` confirmed absent from the remote.
