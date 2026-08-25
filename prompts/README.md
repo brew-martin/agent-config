@@ -11,15 +11,11 @@ Raycast placeholders used:
 | File | Raycast keyword | What it is for |
 |---|---|---|
 | `spec-review.md` | `specreview` | Does the diff match what the issue or plan asked for? |
-| `no-comments.md` | `nocomments` | Adversarial comment cleanup via the Comment Sicko agent |
 
-## no-comments
+Comment cleanup used to live here as a snippet. It is now the `comment-sweep` skill, which
+covers both a single pass and a batched sweep, so the snippet was redundant.
 
-Distilled from pstack's `no-comments` skill, which was installed and then removed as too
-heavy to keep. The `Comment Sicko` agent it spawns IS still installed
-(`~/.agents/agents/comment-sicko.md`) - the prompt will not work without it.
-
-To run the full original skill instead, without installing it:
+## Trialling a skill without installing it
 
     npx skills use cursor/plugins@no-comments
 

@@ -1,7 +1,7 @@
 ---
 name: comment-sweep
 description: Batched comment cleanup across a codebase or a directory, using the Comment Sicko agent. Surveys comment volume, proposes reviewable batches, and commits each one separately. Only runs when explicitly invoked.
-argument-hint: "[path ...] (default: whole repo)"
+argument-hint: "[path ...] | --diff   (no args = survey whole repo)"
 disable-model-invocation: true
 ---
 
@@ -12,8 +12,17 @@ Comment cleanup at codebase scale, split into batches a human can actually revie
 Requires the `Comment Sicko` agent. If `subagent_type: "Comment Sicko"` is unavailable,
 stop and say so rather than improvising a substitute.
 
-For a single diff or one small directory, this is overkill - use the `nocomments` prompt in
-`~/.agents/prompts/no-comments.md` instead.
+## Two modes
+
+**Single pass.** If the scope is one directory under ~150 files, an explicit file list, or
+the current diff, skip straight to section 4 and run it once. No survey, no batch plan, no
+branch, no confirmation round. Say which mode you picked in one line, then get on with it.
+
+**Sweep.** Anything larger, or no argument at all, runs the full survey and batch plan
+below. This is the only safe way to handle thousands of comment lines, because the review
+in step 4.2 is the part only a human can do and it does not scale past a few hundred files.
+
+`/comment-sweep --diff` forces single pass on the working tree against the base branch.
 
 ## 1. Survey before proposing anything
 
@@ -65,7 +74,7 @@ Confirm the working tree is clean; refuse to start if it is not. Create a branch
 `package.json` or the agent instructions - `pnpm ok`, `pnpm check`, `npm test`, whatever it
 uses. If there isn't one, say so; the user is then reviewing without a safety net.
 
-## 4. Per batch
+## 4. Per batch (single pass: just this section, once)
 
 1. Spawn `Task` with `subagent_type: "Comment Sicko"`. Give it the batch scope and tell it
    to review every file in scope, not just changed files. Do not restate its rules.
