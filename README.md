@@ -129,6 +129,10 @@ Jobs that do not justify an installed skill live in `prompts/` as paste-able tex
 as Raycast snippets. Kept in the repo so they survive a new machine. See
 `prompts/README.md`.
 
+Prefer a skill when the job has real structure, needs supporting files, or should reach
+Codex. Prefer a prompt when it is a paragraph you paste anywhere, including tools with no
+skill support.
+
 An installed agent is not dormant: its name and description are registered as a selectable
 agent type in every session. Cheap (one line), but the model can choose it unprompted -
 there is no `disable-model-invocation` equivalent for agents.
