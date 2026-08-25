@@ -37,7 +37,9 @@ n=0
 while IFS=$'\t' read -r name source; do
   case "$name" in ''|'#'*) continue ;; esac
   [ -d "$POOL/skills/$name" ] && { ok "$name (present)"; n=$((n+1)); continue; }
-  if npx --yes "$SKILLS_CLI" add "$source" --skill "$name" -g -y >/dev/null 2>&1 \
+  # </dev/null is load-bearing: the CLI reads stdin and would otherwise swallow
+  # the rest of the manifest that this while-loop is reading from.
+  if npx --yes "$SKILLS_CLI" add "$source" --skill "$name" -g -y </dev/null >/dev/null 2>&1 \
      && [ -d "$POOL/skills/$name" ]; then
     ok "$name  <- $source"; n=$((n+1))
   else

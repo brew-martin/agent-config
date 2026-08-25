@@ -9,6 +9,8 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
       commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           1 sub-agent         -> Claude Code, Cursor
       sync.sh          idempotent linker
+      bootstrap.sh     rebuild on a new machine
+      skills.manifest  name -> source, for bootstrap
       .skill-lock.json manifest for all skills
       CHANGELOG.md     history of changes
 
@@ -106,6 +108,31 @@ The CLI manages skills only. Commands have no lockfile entry and are not covered
 
     curl -fsSL https://rams.ai/rams.md -o ~/.agents/commands/rams.md
     ~/.agents/sync.sh
+
+## New machine
+
+This directory is a git repo. Skills are NOT committed - they are vendored from upstream
+and rebuilt from `skills.manifest`.
+
+    git clone <remote> ~/.agents
+    ~/.agents/bootstrap.sh
+
+`bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a
+`skillFolderHash` and stays updatable), fetches `rams.md` from source, clones the team repo
+and relinks `second-opinion`, writes the global instruction files, and runs `sync.sh`.
+Idempotent - re-run any time to repair drift.
+
+After bootstrap, one manual step remains: paste `AGENTS.md` into
+Cursor Settings > Rules > User.
+
+Regenerate the manifest after adding or removing skills:
+
+    python3 -c "import json,os;j=json.load(open(os.path.expanduser('~/.agents/.skill-lock.json')))['skills'];open(os.path.expanduser('~/.agents/skills.manifest'),'w').write('# name\tsource\n'+''.join(f'{k}\t{j[k][\"source\"]}\n' for k in sorted(j)))"
+
+Not reproduced by bootstrap, install by hand: bun (`brew install oven-sh/bun/bun`),
+gh, cursor-agent, node, pnpm. bootstrap reports which are missing.
+
+Per-repo `AGENTS.md` files live in their own repos and travel with git.
 
 ## Backups
 

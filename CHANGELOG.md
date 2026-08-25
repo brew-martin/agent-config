@@ -215,3 +215,26 @@ prompts not being loaded.
 removes stale copies via a `.pool-managed` manifest, and leaves hand-added prompts alone.
 
 All 3 commands now reach Codex. Pool: 29 skills, 3 commands, 1 agent.
+
+## Portability 2026-08-25
+
+`~/.agents` is now a git repo with `bootstrap.sh` + `skills.manifest`.
+
+Skills are gitignored, not committed: they are upstream copies, and committing them would
+duplicate upstream and churn on every `skills update`. `skills.manifest` (name -> source)
+is enough to rebuild them through the CLI, which also gives each a `skillFolderHash` so
+`skills update` keeps working. `.skill-lock.json` is gitignored as machine-local state.
+
+`skills experimental_install` was evaluated and rejected: it restores from a project
+`skills-lock.json`, not the global `.skill-lock.json`, so it cannot rebuild this pool.
+
+Tested end to end against an isolated HOME (`/tmp/fakehome`), not just written. That caught
+a real bug: `npx skills add` reads stdin, and inside `while read < manifest` it swallowed
+the remaining lines, so only the first skill installed. Fixed with `</dev/null` on the npx
+call. Retested: 4/4 skills, 3 commands, 1 agent, 3 codex prompt copies, 0 broken links,
+idempotent on re-run.
+
+Also confirmed the CLI exits 0 on success despite printing
+"Failed to install 1 - PromptScript does not support global skill installation".
+That line is noise from a tool we do not use; bootstrap checks the directory exists rather
+than trusting the exit code.
