@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# Sync the shared agent-config pool (~/.agents) into each tool's config dir.
+# Idempotent: safe to re-run. Only ever creates/refreshes symlinks that point
+# into the pool; never touches real files a tool owns.
+set -euo pipefail
+
+POOL="$HOME/.agents"
+# tool:layers  - only layers the tool actually reads
+TOOLS=(
+  "$HOME/.claude:skills commands agents"
+  "$HOME/.cursor:skills commands agents"
+  "$HOME/.codex:skills"          # codex reads skills as symlinks
+)
+# Tools that need COPIES rather than symlinks, as "<dir>:<pool-layer>".
+# Codex does not load symlinked prompts (openai/codex#3637), so commands are
+# copied into ~/.codex/prompts and refreshed on every run. A .pool-managed
+# manifest records what we put there so stale files can be removed without
+# touching anything the user added by hand.
+COPY_TARGETS=("$HOME/.codex/prompts:commands")
+
+link_layer() {
+  local src="$POOL/$1" tooldir="$2" layer="$1"
+  [ -d "$src" ] || return 0
+  local dest="$tooldir/$layer"
+  mkdir -p "$dest"
+  # drop stale links that point into the pool but no longer resolve
+  find "$dest" -maxdepth 1 -type l | while read -r l; do
+    case "$(readlink "$l")" in
+      *"/.agents/$layer/"*) [ -e "$l" ] || { rm "$l"; echo "  - stale $(basename "$l")"; } ;;
+    esac
+  done
+  for entry in "$src"/*; do
+    [ -e "$entry" ] || continue
+    local name; name=$(basename "$entry")
+    local target="$dest/$name"
+    if [ -L "$target" ]; then
+      [ "$(readlink "$target")" = "$entry" ] || { rm "$target"; ln -s "$entry" "$target"; echo "  ~ $layer/$name"; }
+    elif [ -e "$target" ]; then
+      echo "  ! $layer/$name exists as a real file in $(basename "$tooldir") - left alone"
+    else
+      ln -s "$entry" "$target"; echo "  + $layer/$name"
+    fi
+  done
+}
+
+for spec in "${TOOLS[@]}"; do
+  tool="${spec%%:*}"; layers="${spec#*:}"
+  [ -d "$tool" ] || continue
+  echo "== $(basename "$tool") =="
+  for layer in $layers; do link_layer "$layer" "$tool"; done
+done
+copy_layer() {
+  local dest="$1" src="$POOL/$2"
+  [ -d "$src" ] || return 0
+  mkdir -p "$dest"
+  local manifest="$dest/.pool-managed"
+  # remove files we previously copied that are no longer in the pool
+  if [ -f "$manifest" ]; then
+    while IFS= read -r name; do
+      [ -z "$name" ] && continue
+      [ -e "$src/$name" ] || { rm -f "$dest/$name"; echo "  - $name"; }
+    done < "$manifest"
+  fi
+  : > "$manifest"
+  for entry in "$src"/*; do
+    [ -f "$entry" ] || continue
+    local name; name=$(basename "$entry")
+    echo "$name" >> "$manifest"
+    if ! cmp -s "$entry" "$dest/$name"; then
+      rm -f "$dest/$name"; cp "$entry" "$dest/$name"; echo "  + $name (copy)"
+    fi
+  done
+}
+
+for spec in "${COPY_TARGETS[@]}"; do
+  dest="${spec%%:*}"; layer="${spec#*:}"
+  [ -d "$(dirname "$dest")" ] || continue
+  echo "== $(basename "$(dirname "$dest")")/$(basename "$dest") (copies) =="
+  copy_layer "$dest" "$layer"
+done
+
+echo "done."
