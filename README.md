@@ -150,6 +150,32 @@ which `npx skills update` will revert, since updates overwrite local edits.
 A manual-only skill is only ever used if something reminds you it exists. A pointer in
 `AGENTS.md` is what turns "I have to remember" into "the agent offers it".
 
+## MCP servers - not in this pool
+
+MCP config cannot be symlinked here. Two of the three tools bury it inside files that are
+also live machine state, and Codex uses a different format entirely.
+
+| Tool | File | Where in it |
+|---|---|---|
+| Claude Code | `~/.claude.json` | top-level `mcpServers` key (file is ~80 KB of state: caches, startup counts, oauth, per-project history) |
+| Cursor | `~/.cursor/mcp.json` | whole file - the only dedicated one |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.*]` TOML tables |
+
+All three are `0600`. Do not hand-edit `~/.claude.json` - Claude Code rewrites it
+constantly. Use the CLIs:
+
+    claude mcp add [--transport http] <name> <commandOrUrl> [args...]
+    claude mcp list
+    codex mcp add|list|remove
+    # Cursor: edit ~/.cursor/mcp.json directly, or Settings > MCP
+
+**Never commit MCP config.** Some servers carry tokens in `env`, which is the reason this
+layer stays out of the repo while skills and commands do not.
+
+Claude Code also supports **per-project** servers under `projects.<path>.mcpServers` in
+`~/.claude.json`, and `.mcp.json` at a repo root. Worth knowing because a server added
+while sitting in one directory is invisible everywhere else.
+
 ## Things that are not ours
 
 - `~/.cursor/skills-cursor/` - Cursor's own built-ins. Auto-managed via
