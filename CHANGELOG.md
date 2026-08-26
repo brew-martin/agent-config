@@ -2,6 +2,17 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — comment-sweep shared with the team, survey block repaired
+
+`comment-sweep` and `comment-sicko` copied into `brewdigital/skills` (PR #3) with the MIT
+licence and credit for the original, and a README section on what was retuned and why. The
+team copy points at `~/.claude/agents/comment-sicko.md` rather than `~/.agents/...`, since
+they symlink from the repo clone. That one line is the only divergence; keep it that way.
+
+The `[[:space:]]` warning added earlier today had been dropped *between* the two survey
+commands, orphaning the `find` line outside its code block. Both commands are together
+again with the note after them.
+
 ## 2026-08-26 — added 8 of jakubkrehel/skills, dropped `oklch-skill`
 
 `jakubkrehel/skills` is eleven interface skills. Took eight, 37 skill dirs now.

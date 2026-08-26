@@ -47,10 +47,10 @@ Do not assume TypeScript.
 Then, per directory, count comment lines and files. Something like, with the globs adapted:
 
     grep -rhoE '^[[:space:]]*(//|/\*|\*)' "$d" --include='*.ts' --include='*.tsx' | wc -l
+    find "$d" \( -name '*.ts' -o -name '*.tsx' \) | wc -l
 
 Use `[[:space:]]`, not `\s`. `git grep -E` does not understand `\s` and silently reports
 roughly a sixteenth of the real count, which makes a batch look small enough to skip.
-    find "$d" \( -name '*.ts' -o -name '*.tsx' \) | wc -l
 
 Exclude generated files - anything gitignored, plus `*.gen.*`, `*.generated.*`, snapshots
 and lockfiles. Deleting comments from generated code is churn that regenerates.
