@@ -2,6 +2,16 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — added `oklch-skill`
+
+`jakubkrehel/oklch-skill`, 30 skills now. OKLCH conversion, palette generation, contrast
+checking, gamut handling, Tailwind v4 theming. Fires on its own; four reference files
+behind a 90-line SKILL.md, so it costs nothing until a colour question shows up.
+
+The installer reported `PromptScript does not support global skill installation` as a
+failure. Ignorable — PromptScript is one of ~17 agent targets the CLI tries, and the pool
+does not use it.
+
 ## 2026-08-26 — comment-sweep: the audit was overruling the agent
 
 First real runs, against `accessibility-tool`, deleted 97% of `app/lib/client` and 95% of
