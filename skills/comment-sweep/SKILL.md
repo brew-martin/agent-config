@@ -15,10 +15,17 @@ stop and say so rather than improvising a substitute.
 ## Two modes
 
 **Single pass.** If the scope is one directory under ~150 files, an explicit file list, or
-the current diff, skip straight to section 4 and run it once. No batch plan, no branch. Do
-still count the comment lines in scope: the kill-rate gate in step 4.6 applies here exactly
-as it does in a sweep, and it needs the denominator. Say which mode you picked in one line,
-then get on with it.
+the current diff, skip straight to section 4 and run it once. No batch plan, no branch.
+
+Two things from section 3 still apply. Identify the check command, because step 4.5 runs
+it. Confirm the tree is clean, because Sicko edits in place and a dirty tree leaves nobody
+able to tell its deletions from the user's own work. `--diff` is the exception to the
+second, since sweeping uncommitted work is the whole point of it - there, commit or stash
+everything that is not being swept first.
+
+Do still count the comment lines in scope: the kill-rate gate in step 4.6 applies here
+exactly as it does in a sweep, and it needs the denominator. Say which mode you picked in
+one line, then get on with it.
 
 **Sweep.** Anything larger, or no argument at all, runs the full survey and batch plan
 below. This is the only safe way to handle thousands of comment lines, because the review
@@ -83,22 +90,30 @@ uses. If there isn't one, say so; the user is then reviewing without a safety ne
 
 1. Spawn `Task` with `subagent_type: "Comment Sicko"`. Give it the batch scope and tell it
    to review every file in scope, not just changed files. Do not restate its rules.
-2. Audit its report. The keep list lives in `~/.agents/agents/comment-sicko.md` and
-   nowhere else - read it if you do not already have it, and keep no second copy here. A
-   divergent copy silently overrules the agent.
+2. Audit its report **and the diff it left behind**. Sicko deletes as it goes; the report
+   is its account of what it did, not a proposal. The diff is the evidence, and a report
+   read without it audits a claim rather than a change.
 
-   Accept its confident kills. Decide every kill it branded `UNSURE` yourself, and keep
-   the ones a clause plausibly covers: Sicko deletes on doubt precisely so this step can
-   rescue, and this is the only thing between a sweep and a scorched-earth diff. Reject
-   outright three things - edits to application code rather than comments, anything
-   outside the batch scope, and deletions whose stated reason is factually wrong.
+   The keep list lives in the agent definition - `comment-sicko.md`, in whichever agents
+   directory your tool loaded it from - and nowhere else. Read it if you do not already
+   have it, and keep no second copy here. Do not hardcode a path to it: it is
+   `~/.claude/agents/` in Claude Code and `~/.cursor/agents/` in Cursor. A divergent copy
+   silently overrules the agent.
+
+   Leave its confident kills alone. Decide every kill it branded `UNSURE` yourself and
+   restore the ones a clause plausibly covers: Sicko deletes on doubt precisely so this
+   step can put them back, and this is the only thing between a sweep and a scorched-earth
+   diff. Revert outright three things - edits to application code rather than comments,
+   anything outside the batch scope, and deletions whose stated reason is factually
+   wrong.
 
    Check reasons in both directions. A comment that argues for its own survival is making
    a claim, and a suppression's excuse is the only thing between its rule and the bug that
    rule catches - read every surviving suppression against what its rule actually fires on.
    A false excuse for keeping is exactly as wrong as a false reason for deleting, and it is
    the one the sweep is built to miss.
-3. Apply the accepted deletions.
+3. Restore what you rescued, and nothing else. Everything Sicko deleted is already gone
+   from the tree - the edit here is putting comments back, never taking more out.
 4. **Comments only by default.** Do not fix workarounds, change application code, or
    encode constraints as types or lint rules during a sweep - that makes the diff
    unreviewable. Collect those as open work and report them at the end. Only do them
@@ -106,9 +121,12 @@ uses. If there isn't one, say so; the user is then reviewing without a safety ne
 5. Run the check command. If it fails, stop the sweep and report - do not continue into
    the next batch on a red tree.
 6. Work out the kill rate: comments deleted as a percentage of the batch's comment lines.
-   Above 60%, show the user before committing. This is what the pilot batch was for - the
-   rate they accept there becomes the expected rate, and a later batch far above it is a
-   reason to stop rather than to press on.
+   Above 60%, stop before committing, show the user the rate and the diff, and wait for
+   explicit approval. If they refuse, do not commit: restore what they name, or abandon
+   the batch with `git checkout -- <scope>`, and stop the sweep rather than moving to the
+   next batch. This is what the pilot batch was for - the rate they accept there becomes
+   the expected rate, and a later batch far above it is a reason to stop rather than to
+   press on.
 7. Commit this batch alone: `chore(comments): sweep <scope>` with the deletion count in
    the body.
 8. Report one line: scope, comments deleted, kill rate, comments kept and why, check

@@ -19,6 +19,7 @@ Only these exceptions get to crawl away.
 - Doc comments that define a public API contract.
 - Issue or RFC links that explain a constraint code cannot express.
 - Domain or regulatory facts the code cannot derive. A spec clause, a standard's threshold, a rate set by someone outside this repo.
+- Interpreter directives. `#!/usr/bin/env bash`, `# -*- coding: utf-8 -*-`, anything the runtime itself reads off the first lines. They start like comments and are not comments: take one out and the file stops running. Lint suppressions are not this. Those are meat, and their fate is below.
 
 That list is my only leash. When I am not sure a keep clause applies the comment still dies, but I brand that kill `UNSURE` and name the clause that almost saved it. I never hide a weak kill among strong ones. Everything else is meat.
 

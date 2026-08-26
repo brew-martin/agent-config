@@ -2,6 +2,46 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — comment-sweep had the agent contract backwards
+
+CodeRabbit reviewed the team-repo PR and raised six things. Four were real, and chasing one
+of them turned up a bug it had not spotted.
+
+**Step 4.3 said "apply the accepted deletions". Sicko has already applied them.** Upstream's
+own `no-comments` skill says "inspect its report **and diff**" and "restore deletions only
+with exact exceptions" - the agent edits in place and the caller puts back what it rescues.
+Sicko's own text agrees: "I touch comments", "name touched files". The line reading the other
+way, "I do not touch the code", is about the `MUST KILL` refactor it declines to perform, not
+about comments. So the skill described an inverted workflow that every run so far has had to
+improvise past. Step 4.2 now audits the report *and the diff*, 4.2's rescues *restore* rather
+than *keep*, and 4.3 is explicit that the only edit at that point is putting comments back.
+
+**The keep-list path was hardcoded.** It pointed at one tool's agents directory, so a Cursor
+run would read a path that does not exist. It now names the file and lets the tool resolve it.
+This also removes the only divergence between this copy and a shared one.
+
+**The 60% kill-rate gate was not a gate.** "Show the user before committing" has no approval
+step and no rejection path. It now stops, waits for explicit approval, and says what to do
+when refused - restore, or `git checkout -- <scope>`, and stop the sweep.
+
+**Single pass skipped all of section 3**, including the check command that step 4.5 then runs,
+and any look at the tree state. It now takes both from section 3, with `--diff` exempt from
+the clean-tree rule since sweeping uncommitted work is its purpose.
+
+**Sicko gained an interpreter-directive clause.** `#!/usr/bin/env bash` starts with `#`, the
+survey treats `#` as shell comment syntax, and nothing in the keep list protected it. Never hit
+because every run so far has been TypeScript. Worded to exclude lint suppressions, which stay
+meat.
+
+**Not changed.** CodeRabbit wanted the agent's report to identify each deletion by file and
+range; the diff already does that, and requiring both rebuilds the duplication that broke this
+skill the first time. Its markdownlint fence-language note applied to the team repo's README
+only. Its `SkillSpector` "unauthorized session persistence" warning is step 3 creating a git
+branch.
+
+**Untested.** The corrected contract has not been through a run. The three runs behind the
+current tuning happened under the inverted wording.
+
 ## 2026-08-26 — comment-sweep shared with the team, survey block repaired
 
 `comment-sweep` and `comment-sicko` copied into `brewdigital/skills` (PR #3) with the MIT
