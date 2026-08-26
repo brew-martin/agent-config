@@ -2,6 +2,45 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — comment-sweep: the audit was overruling the agent
+
+First real runs, against `accessibility-tool`, deleted 97% of `app/lib/client` and 95% of
+`app/components/ui` — including a documented Chrome download race, a React hydration note,
+and the ARIA live-region contract on `Alert`'s `role` prop. On an accessibility product.
+
+**Cause: the keep list existed twice and the copies had drifted.** Sicko carries five keep
+clauses; the skill's step 4.2 restated three, having lost *public API doc comments* and
+*issue/RFC links*. So the audit's own criteria told it to delete what the agent had
+correctly spared. Fixed by deleting the skill's copy and pointing at the agent definition —
+syncing two lists only rebuilds the drift. The skill already said "Do not restate its rules"
+one line earlier.
+
+**Doubt is now visible.** Sicko still kills on doubt, but brands those kills `UNSURE` and
+names the clause that nearly saved each. Previously "when unsure, delete" fired in both the
+agent and the audit with nothing between them; now the first proposes and the second
+decides.
+
+**Kill-rate gate at 60%**, checked before the commit, so the pilot batch's calibration does
+something. It is one-sided by design — it catches a sweep that deletes too much, not one
+that has gone timid.
+
+**Sicko gained a keep clause** for domain and regulatory facts the code cannot derive: a
+spec clause, a standard's threshold, an externally-set rate. WCAG citations and measured
+contrast ratios are the case that prompted it.
+
+**Result, same scopes, same base:** `app/lib/client` 97% → 89% (21 → 81 lines kept, four
+`UNSURE` rescues), `app/components/ui` 95% → 76% (65 → 290). Prop-level TSDoc contracts
+survived; component docs restating the component's own name did not. The gate fired on both.
+
+**Two follow-on fixes from the `ui` run.** The audit checked stated reasons in one direction
+only: it rejected false reasons for *deleting* and said nothing about false reasons for
+*keeping*. A `biome-ignore` on `RadioGroup.tsx` survived on the excuse "Base UI Radio.Root
+is the control element", which `Switch.tsx`'s own surviving comment disproves in the same
+PR — `<label>` does not name a `<button>`, so every option is unnamed. Reasons are now
+checked both ways, and Sicko treats a suppression's excuse as a claim to test. Separately,
+single-pass mode said "no confirmation round" while step 4.6 said stop above 60%; the gate
+now explicitly survives single pass.
+
 ## 2026-08-26 — Cursor global rules, and a stale skill pointer
 
 **`AGENTS.md` pointed at a skill that no longer exists.** The "diff has grown noisy
