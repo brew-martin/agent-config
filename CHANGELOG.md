@@ -2,6 +2,40 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — added 8 of jakubkrehel/skills, dropped `oklch-skill`
+
+`jakubkrehel/skills` is eleven interface skills. Took eight, 37 skill dirs now.
+
+**Auto-firing:** `better-interface` (orchestrator), `better-colors`, `better-layout`,
+`better-typography`, `better-writing`.
+**Manual only:** `interface-review`, `break`, `explain-interface` — all three carry
+`disable-model-invocation: true`, so they are in the AGENTS.md pointer table.
+
+**`better-colors` replaces `oklch-skill`.** Same author, superset: six reference files to
+oklch's four, adding token naming, colour usage, palette structure and contrast, and still
+oklch-native throughout. Keeping both would have put two overlapping skills on the same
+triggers. `oklch-skill` was installed the same day and lasted about an hour.
+
+**Left out, all three for collisions with what is already here:**
+
+- `better-ui` — overlaps `emil-design-eng` and the three animation skills. Its
+  `animations.md` is 205 lines and `surfaces.md` 219, so this is real duplication, not a
+  different angle.
+- `variant` — near-identical brief to `prototype`: both user-invoked, both build several
+  genuinely different versions behind a picker.
+- `better-accessibility` — overlaps `accessibility` (addyosmani). Different flavour, but
+  they compete on the same triggers.
+
+**Known consequence.** `better-interface` routes to six domain skills; two of them
+(`better-accessibility`, `better-ui`) are not installed, so it will report those domains
+`Not reviewed`. That is by design — the skill is explicitly forbidden from recreating a
+missing owner's rules from memory — and it is the right failure mode. It means a
+`better-interface` run covers four of six domains, and accessibility and motion still need
+`accessibility` and `review-animations` run separately.
+
+Install via the CLI, not the Claude Code plugin. The plugin namespaces everything as
+`/interfaces:break` and installs outside this pool, so `bootstrap.sh` would not rebuild it.
+
 ## 2026-08-26 — added `oklch-skill`
 
 `jakubkrehel/oklch-skill`, 30 skills now. OKLCH conversion, palette generation, contrast
