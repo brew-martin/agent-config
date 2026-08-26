@@ -2,6 +2,26 @@
 
 Chronological record of changes to this pool.
 
+## 2026-08-26 — Cursor global rules, and a stale skill pointer
+
+**`AGENTS.md` pointed at a skill that no longer exists.** The "diff has grown noisy
+comments" row named `no-comments`, removed on 25 Aug when `comment-sweep` superseded it,
+while `comment-sweep` itself — one of the five that cannot self-fire — was listed nowhere.
+Row corrected. The other nine were checked against `skills/` and all resolve.
+
+**Cursor's Rules UI moved.** `Settings > Rules > User` is gone; user rules now live in the
+Customize panel, scope dropdown set to your own name, `+ New`. Still app config rather than
+a file, so `bootstrap.sh` still cannot write them. Corrected in `AGENTS.md`, `README.md`
+(×3, including an MCP reference to `Settings > MCP`) and `bootstrap.sh`. The August entry
+below is left as written — it was true then.
+
+**`cursor-user-rule.txt` added.** That input is a single-line style field, so the `AGENTS.md`
+table does not survive a paste. The new file holds the same content flattened to one
+paragraph. It is hand-maintained, not generated: edit `AGENTS.md` and it must be updated and
+re-pasted, and nothing checks that. Now live in Cursor, which had zero user rules before.
+
+**British English convention dropped** from both files, at the user's call while pasting.
+
 ## Migration 2026-08-25
 
 Backup of everything touched: `/Users/martinsherwood/ai-config-backups/cursor-20260825-092448`
