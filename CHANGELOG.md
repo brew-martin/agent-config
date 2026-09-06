@@ -2,6 +2,18 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-06 — added Karen
+
+Added an adapted version of
+[`darcyegb/ClaudeCodeAgents`' Karen agent](https://github.com/darcyegb/ClaudeCodeAgents/blob/master/karen.md)
+for independent completion checks in Claude Code and Cursor.
+
+The local version keeps the execution-first reality check and allows a clean pass. It drops
+references to sibling agents that are not installed, adds explicit read-only and
+non-destructive boundaries, narrows source inspection to explaining observed behavior, and
+requires evidence-backed findings without a fixed report template. The upstream MIT notice
+is recorded in `THIRD_PARTY_NOTICES.md`.
+
 ## 2026-08-26 — comment-sweep had the agent contract backwards
 
 CodeRabbit reviewed the team-repo PR and raised six things. Four were real, and chasing one

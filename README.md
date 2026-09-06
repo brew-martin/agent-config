@@ -8,7 +8,7 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
       cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
       skills/          37 skill dirs        -> Claude Code, Cursor, Codex
       commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
-      agents/           1 sub-agent         -> Claude Code, Cursor
+      agents/           2 sub-agents        -> Claude Code, Cursor
       prompts/          paste-able prompts  -> saved as Raycast snippets
       sync.sh          idempotent linker
       bootstrap.sh     rebuild on a new machine
