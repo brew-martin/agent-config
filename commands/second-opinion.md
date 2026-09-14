@@ -75,7 +75,7 @@ If the chosen model is a Claude one, say so in the report — it is a same-famil
    - Name the exact paths to review — files, directories, or the temp diff path.
    - Say what to prioritise, in order: correctness bugs, then security and data loss, then structural problems that will bite later. Not style, not naming, not nits.
    - Ask for findings ranked most-severe first, each one line: `severity — category: claim (file:line)`.
-   - Say "Only high-conviction findings — report as many or as few as there genuinely are. A diff with one real problem should return one finding, not six. List at most 6; if there are more worth reporting, add a final line `+N more not listed`. No preamble, no summary, no restating the code. If nothing is wrong, say NO ISSUES."
+   - Say "Only high-conviction findings — report as many or as few as there genuinely are. A diff with one real problem should return one finding, not ten. List every high-conviction finding; do not pad the list to look thorough. No preamble, no summary, no restating the code. If nothing is wrong, say NO ISSUES."
 
    Allow up to 7 minutes; high and xhigh effort are slow. Do not stream partial output.
 
@@ -90,7 +90,7 @@ If the chosen model is a Claude one, say so in the report — it is a same-famil
    - Findings ranked most-severe first, each with its `file:line`.
    - Mark each verified one **Confirmed**, each contradicted one **Wrong** (with the one-line reason), and leave the rest as unverified reviewer claims.
    - Never present an unverified claim as fact.
-   - If the reviewer ended with `+N more not listed`, pass that on — the user needs to know the review was truncated, and can re-run on a narrower scope.
+   - Relay every finding, not just the verified ones. Say how many you spot-checked, so a long list is not read as a long list of confirmed problems.
    - Close with a one-line verdict: is anything here worth acting on before this ships?
 
 ## Constraints
