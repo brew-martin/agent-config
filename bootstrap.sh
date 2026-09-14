@@ -8,8 +8,6 @@ set -uo pipefail
 
 POOL="$HOME/.agents"
 SKILLS_CLI="skills@1.5.23"
-TEAM_REPO="git@github.com:brewdigital/skills.git"
-TEAM_PATH="$HOME/Documents/Projects/skills"
 fail=0
 
 say() { printf '\n\033[1m%s\033[0m\n' "$1"; }
@@ -52,15 +50,6 @@ say "3. Commands not stored in this repo"
 # rams is fetched from source; skills.sh does not manage commands.
 curl -fsSL https://rams.ai/rams.md -o "$POOL/commands/rams.md" \
   && ok "rams.md fetched from rams.ai" || no "could not fetch rams.md"
-# second-opinion is authored in the team repo; keep that authoritative.
-if [ ! -d "$TEAM_PATH" ]; then
-  git clone -q "$TEAM_REPO" "$TEAM_PATH" 2>/dev/null \
-    && ok "cloned $TEAM_REPO" || echo "  ! could not clone $TEAM_REPO (ssh key?)"
-fi
-if [ -f "$TEAM_PATH/commands/second-opinion.md" ]; then
-  ln -sfn "$TEAM_PATH/commands/second-opinion.md" "$POOL/commands/second-opinion.md"
-  ok "second-opinion.md -> team repo"
-fi
 
 say "4. Global instructions"
 mkdir -p "$HOME/.claude" "$HOME/.codex" "$HOME/handoffs"

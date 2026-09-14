@@ -2,6 +2,13 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-14 — second-opinion is now a local copy
+
+`commands/second-opinion.md` was a symlink into the team repo (`brewdigital/skills`), so
+every local edit landed in the team's version. It is now a real file committed here, copied
+from the team repo as it stood. `bootstrap.sh` no longer clones the team repo or relinks the
+command. Changes meant for the team now have to be ported to that repo by hand.
+
 ## 2026-09-06 — added Karen
 
 Added an adapted version of

@@ -18,9 +18,8 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
 
 Also created outside this directory: `~/handoffs/` for handoff documents.
 
-Committed to git: everything above except `skills/`, `.skill-lock.json` and
-`commands/second-opinion.md` (a symlink to the team repo). Those are rebuilt by
-`bootstrap.sh`. See `.gitignore`.
+Committed to git: everything above except `skills/` and `.skill-lock.json`. Those are
+rebuilt by `bootstrap.sh`. See `.gitignore`.
 
 ## Adding something
 
@@ -209,8 +208,7 @@ and rebuilt from `skills.manifest`.
     ~/.agents/bootstrap.sh
 
 `bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a
-`skillFolderHash` and stays updatable), fetches `rams.md` from source, clones the team repo
-and relinks `second-opinion`, writes the global instruction files, and runs `sync.sh`.
+`skillFolderHash` and stays updatable), fetches `rams.md` from source, writes the global instruction files, and runs `sync.sh`.
 Idempotent - re-run any time to repair drift.
 
 After bootstrap, one manual step remains: paste `AGENTS.md` into Cursor's Customize panel
