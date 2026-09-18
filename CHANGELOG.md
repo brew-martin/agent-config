@@ -2,6 +2,12 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-18 — added typesafe-ai
+
+Installed `typesafe-ai` from `typesafe-ai/skills` via the CLI, so it has a lockfile entry
+and stays updatable. It covers building features on TypeSafe's typed-judgment models, and
+fires on its own.
+
 ## 2026-09-14 — second-opinion is now a local copy
 
 `commands/second-opinion.md` was a symlink into the team repo (`brewdigital/skills`), so
