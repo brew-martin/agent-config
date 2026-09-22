@@ -1,6 +1,6 @@
 ---
 description: Get a second-opinion code review from another model via the Cursor Agent CLI
-argument-hint: [--model <alias>] [file-or-dir ...] (defaults to Cursor Grok 4.6 Extra High on the working diff)
+argument-hint: [--model <alias>] [file-or-dir ...] (defaults to Grok 4.7 High Fast on the working diff)
 allowed-tools: Bash(cursor-agent:*), Bash(git diff:*), Bash(git status:*), Bash(git ls-files:*), Bash(git rev-parse:*), Bash(mktemp:*), Bash(rm -f /tmp/second-opinion-*), Read, Grep
 disable-model-invocation: true
 ---
@@ -26,8 +26,8 @@ Resolve `<x>` against this table. It is a shorthand table, not a whitelist — a
 
 | Alias | Model id |
 |---|---|
-| *(none)* | `cursor-grok-4.7-high` — the default |
-| `grok` | `cursor-grok-4.7-high` |
+| *(none)* | `grok-4.7-high-fast` — the default |
+| `grok` | `grok-4.7-high-fast` |
 | `sol` | `gpt-5.6-sol-high` |
 | `terra` | `gpt-5.6-terra-high` |
 | `kimi` | `kimi-k3-high` |
