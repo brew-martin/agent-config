@@ -26,11 +26,10 @@ Resolve `<x>` against this table. It is a shorthand table, not a whitelist — a
 
 | Alias | Model id |
 |---|---|
-| *(none)* | `cursor-grok-4.6-xhigh` — the default |
-| `grok` | `cursor-grok-4.6-xhigh` |
+| *(none)* | `cursor-grok-4.7-high` — the default |
+| `grok` | `cursor-grok-4.7-high` |
 | `sol` | `gpt-5.6-sol-high` |
 | `terra` | `gpt-5.6-terra-high` |
-| `composer` | `composer-2.5` |
 | `kimi` | `kimi-k3-high` |
 
 Append `-fast` to most ids for a faster, pricier variant (e.g. `gpt-5.6-sol-high-fast`).
