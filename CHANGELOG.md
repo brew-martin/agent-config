@@ -2,6 +2,15 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-23 — removed prompts/, added security-audit
+
+Deleted `prompts/` (`spec-review.md` and its README). It was never used. The Raycast
+snippet copies live in Raycast and have to be deleted there.
+
+Installed `security-audit` from `cloudflare/security-audit-skill` via the CLI. It is the
+only dedicated security skill; `improve` and `improve-react` cover security as one audit
+category among several, and the built-in `/security-review` only checks the current diff.
+
 ## 2026-09-18 — added typesafe-ai
 
 Installed `typesafe-ai` from `typesafe-ai/skills` via the CLI, so it has a lockfile entry
