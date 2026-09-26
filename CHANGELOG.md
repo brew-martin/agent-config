@@ -16,7 +16,7 @@ run, and reports anything the model changed with undo commands. This matters bec
 Cursor allowlist in `~/.cursor/cli-config.json` lets `git commit`, `git checkout` and `rm`
 run without `--force`.
 
-Not ported to the team repo.
+Copied to the team repo (`~/Documents/Projects/skills/commands/`) on 2026-09-26.
 
 ## 2026-09-23 — removed prompts/, added security-audit
 

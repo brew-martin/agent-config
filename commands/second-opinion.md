@@ -43,7 +43,7 @@ If the chosen model is a Claude one, say so in the report — it is a same-famil
 
 The review runs in Cursor's default agent mode, not `--mode ask`, so that `--fix` can `--resume` the same chat and the model fixes its own findings with its reasoning still in context. A chat started with `--mode ask` stays read-only when resumed, and `--mode` has no write option to switch it back.
 
-That means the review is read-only by instruction only. Commands on the user's Cursor allowlist (`~/.cursor/cli-config.json`, which includes `git commit`, `git checkout` and `rm`) run without prompting; anything else is rejected. So every `cursor-agent` run is bracketed by a snapshot:
+That means the review is read-only by instruction only. Commands on the user's Cursor allowlist (`~/.cursor/cli-config.json`) run without prompting, and that list can include `git commit`, `git checkout` or `rm`; anything else is rejected. So every `cursor-agent` run is bracketed by a snapshot:
 
 ```bash
 IDX=$(mktemp -u /tmp/second-opinion-XXXXXX.idx)
