@@ -2,6 +2,22 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-25 — second-opinion can fix what it found
+
+`/second-opinion --fix` sends the reviewing model back to fix its findings, then Claude
+checks the diff. `--fix` alone fixes every finding Claude can confirm; `--fix 1,3` fixes
+those numbers. `-m` picks a different fixer.
+
+The review no longer runs with `--mode ask`. A chat started in ask mode stays read-only
+when resumed, and `--mode` has no write option, so the fixer could not resume it. The
+review now runs in agent mode and is read-only by prompt only. Claude snapshots the
+working copy (untracked files included) and HEAD before and after each `cursor-agent`
+run, and reports anything the model changed with undo commands. This matters because the
+Cursor allowlist in `~/.cursor/cli-config.json` lets `git commit`, `git checkout` and `rm`
+run without `--force`.
+
+Not ported to the team repo.
+
 ## 2026-09-23 — removed prompts/, added security-audit
 
 Deleted `prompts/` (`spec-review.md` and its README). It was never used. The Raycast
