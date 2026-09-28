@@ -2,6 +2,14 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-27 — added design-taste-frontend
+
+Installed `design-taste-frontend` from `Leonxlnx/taste-skill` via the CLI, so it has a
+lockfile entry and stays updatable. It targets landing pages, portfolios and redesigns
+(not dashboards or product UI), and fires on its own.
+
+README skill count corrected to 40; it had missed `security-audit`.
+
 ## 2026-09-25 — second-opinion can fix what it found
 
 `/second-opinion --fix` sends the reviewing model back to fix its findings, then Claude
