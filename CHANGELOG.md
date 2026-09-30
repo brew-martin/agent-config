@@ -2,6 +2,14 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-30 - removed design-taste-frontend
+
+Removed `design-taste-frontend`; `frontend-design` remains the frontend design skill.
+
+## 2026-09-30 - removed wait-what
+
+Removed `wait-what` from the managed skill set, provider links and global reminders.
+
 ## 2026-09-27 — added design-taste-frontend
 
 Installed `design-taste-frontend` from `Leonxlnx/taste-skill` via the CLI, so it has a

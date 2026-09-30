@@ -21,7 +21,6 @@ be asked.
 | Before a migration, legacy removal, or any wide refactor | `blast-radius` |
 | Before designing a feature or module | `grill-with-docs` |
 | Ending a session with work unfinished | `handoff` |
-| An explanation did not land | `wait-what` |
 | A diff has grown noisy comments or suppressions | `comment-sweep` |
 | Deciding where a module boundary goes | `improve-codebase-architecture` |
 | Choosing a frontend library | `pick-ui-library` |

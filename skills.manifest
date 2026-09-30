@@ -11,7 +11,6 @@ blast-radius	cursor/plugins
 break	jakubkrehel/skills
 codebase-design	mattpocock/skills
 core-web-vitals	addyosmani/web-quality-skills
-design-taste-frontend	Leonxlnx/taste-skill
 deslop	millionco/react-doctor
 domain-modeling	mattpocock/skills
 emil-design-eng	emilkowalski/skills
@@ -36,5 +35,4 @@ security-audit	cloudflare/security-audit-skill
 typesafe-ai	typesafe-ai/skills
 unslop	cursor/plugins
 vercel-react-best-practices	vercel-labs/agent-skills
-wait-what	mattpocock/skills
 writing-for-agents	mattpocock/skills
