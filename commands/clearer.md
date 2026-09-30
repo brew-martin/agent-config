@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Clearer
 
-Rewrite the previous answer for comprehension using the model handling this conversation. Return only the clearer answer after checking that its meaning stayed intact.
+Rewrite the previous answer for comprehension. Return only the clearer answer after checking that its meaning stayed intact.
 
 ## Input
 
