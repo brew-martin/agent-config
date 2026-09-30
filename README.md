@@ -6,8 +6,8 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
       cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
-      skills/          38 skill dirs        -> Claude Code, Cursor, Codex
-      commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
+      skills/          37 skill dirs        -> Claude Code, Cursor, Codex
+      commands/         5 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
       sync.sh          idempotent linker
       bootstrap.sh     rebuild on a new machine
@@ -127,7 +127,7 @@ cannot re-include a path whose parent directory is excluded, so `skills/` alone 
 work. They do not appear in `.skill-lock.json` or `skills.manifest`; they arrive with the
 clone instead, and `npx skills update` leaves them alone.
 
-Current: `comment-sweep`.
+Current: `blast-radius`, `comment-sweep`.
 
 An installed agent is not dormant: its name and description are registered as a selectable
 agent type in every session. Cheap (one line), but the model can choose it unprompted -

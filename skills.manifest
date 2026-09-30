@@ -7,7 +7,6 @@ better-interface	jakubkrehel/skills
 better-layout	jakubkrehel/skills
 better-typography	jakubkrehel/skills
 better-writing	jakubkrehel/skills
-blast-radius	cursor/plugins
 break	jakubkrehel/skills
 codebase-design	mattpocock/skills
 core-web-vitals	addyosmani/web-quality-skills
@@ -33,6 +32,5 @@ prototype	emilkowalski/skills
 review-animations	emilkowalski/skills
 security-audit	cloudflare/security-audit-skill
 typesafe-ai	typesafe-ai/skills
-unslop	cursor/plugins
 vercel-react-best-practices	vercel-labs/agent-skills
 writing-for-agents	mattpocock/skills

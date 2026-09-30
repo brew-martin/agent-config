@@ -2,6 +2,15 @@
 
 Chronological record of changes to this pool.
 
+## 2026-09-30 - replaced pooled unslop with clearer
+
+Removed the managed `unslop` skill from the shared pool. Cursor's Poteto plugin keeps its
+own independently managed copy. Added `/clearer`, a manual command that has the active
+model rewrite its previous answer and check factual fidelity.
+
+Converted `blast-radius` to a committed local skill and replaced its `unslop` dependency
+with an inline clarity rule.
+
 ## 2026-09-30 - removed design-taste-frontend
 
 Removed `design-taste-frontend`; `frontend-design` remains the frontend design skill.
