@@ -26,11 +26,13 @@ improve-animations	emilkowalski/skills
 improve-codebase-architecture	mattpocock/skills
 improve-react	millionco/react-doctor
 interface-review	jakubkrehel/skills
+migrate-radix-to-base	shadcn/ui
 performance	addyosmani/web-quality-skills
 pick-ui-library	emilkowalski/skills
 prototype	emilkowalski/skills
 review-animations	emilkowalski/skills
 security-audit	cloudflare/security-audit-skill
+shadcn	shadcn/ui
 typesafe-ai	typesafe-ai/skills
 vercel-react-best-practices	vercel-labs/agent-skills
 writing-for-agents	mattpocock/skills

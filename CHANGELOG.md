@@ -2,6 +2,13 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-02 - added shadcn and migrate-radix-to-base
+
+Installed both skills from `shadcn/ui` via the CLI, so they have lockfile entries and stay
+updatable. `shadcn` covers working in shadcn/ui projects (components, registries,
+presets); `migrate-radix-to-base` moves components from Radix UI to Base UI. Both fire on
+their own.
+
 ## 2026-09-30 - replaced pooled unslop with clearer
 
 Removed the managed `unslop` skill from the shared pool. Cursor's Poteto plugin keeps its
