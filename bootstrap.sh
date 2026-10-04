@@ -21,8 +21,6 @@ done
 [ "$fail" = "1" ] && { echo; echo "Install the missing tools and re-run."; exit 1; }
 
 # Optional, but skills here depend on them.
-command -v bun  >/dev/null && ok "bun (needed by truffler / find-similar-functions)" \
-  || echo "  ! bun missing - find-similar-functions will not run. brew install oven-sh/bun/bun"
 command -v gh   >/dev/null && ok "gh" || echo "  ! gh missing - GitHub-based workflows will not run"
 command -v cursor-agent >/dev/null && ok "cursor-agent (needed by /second-opinion)" \
   || echo "  ! cursor-agent missing - /second-opinion will not run"

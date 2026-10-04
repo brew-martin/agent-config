@@ -2,6 +2,16 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-04 - removed find-similar-functions
+
+Removed `find-similar-functions` (`millionco/react-doctor`). It came from that repo's own
+`.agents/skills/` folder and was written for working on `truffler` itself; elsewhere it
+needs `truffler` installed in the target project, which none were. Never run in Claude
+Code. Dropped the `bun` prerequisite check from `bootstrap.sh` and the README, since this
+skill was its only reason.
+
+Backup: `~/ai-config-backups/removal-20261004-233916`.
+
 ## 2026-10-04 - removed web-interface-guidelines and performance
 
 Deleted the `/web-interface-guidelines` command. It was a 2026-01-20 snapshot with no

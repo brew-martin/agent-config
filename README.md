@@ -6,7 +6,7 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
       cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
-      skills/          37 skill dirs        -> Claude Code, Cursor, Codex
+      skills/          36 skill dirs        -> Claude Code, Cursor, Codex
       commands/         2 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
       sync.sh          idempotent linker
@@ -205,8 +205,7 @@ After bootstrap, one manual step remains: paste `AGENTS.md` into Cursor's Custom
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds
 a stale set.
 
-Not reproduced by bootstrap, install by hand: bun (`brew install oven-sh/bun/bun`),
-gh, cursor-agent, node, pnpm. bootstrap reports which are missing.
+Not reproduced by bootstrap, install by hand: gh, cursor-agent, node, pnpm. bootstrap reports which are missing.
 
 Per-repo `AGENTS.md` files live in their own repos and travel with git.
 
