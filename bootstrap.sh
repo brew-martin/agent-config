@@ -52,7 +52,7 @@ curl -fsSL https://rams.ai/rams.md -o "$POOL/commands/rams.md" \
   && ok "rams.md fetched from rams.ai" || no "could not fetch rams.md"
 
 say "4. Global instructions"
-mkdir -p "$HOME/.claude" "$HOME/.codex" "$HOME/handoffs"
+mkdir -p "$HOME/.claude" "$HOME/.codex"
 printf '<!-- Canonical instructions live in ~/.agents/AGENTS.md. Edit that file, not this one. -->\n\n@~/.agents/AGENTS.md\n' > "$HOME/.claude/CLAUDE.md"
 ok "~/.claude/CLAUDE.md (import stub - Claude Code does not read AGENTS.md natively)"
 ln -sfn "$POOL/AGENTS.md" "$HOME/.codex/AGENTS.md"

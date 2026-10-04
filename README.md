@@ -15,8 +15,6 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
       .skill-lock.json CLI state: sources + hashes (gitignored, machine-local)
       CHANGELOG.md     history of changes
 
-Also created outside this directory: `~/handoffs/` for handoff documents.
-
 Committed to git: everything above except `skills/` and `.skill-lock.json`. Those are
 rebuilt by `bootstrap.sh`. See `.gitignore`.
 

@@ -2,6 +2,7 @@
 accessibility	addyosmani/web-quality-skills
 animation-vocabulary	emilkowalski/skills
 apple-design	emilkowalski/skills
+better-accessibility	jakubkrehel/skills
 better-colors	jakubkrehel/skills
 better-interface	jakubkrehel/skills
 better-layout	jakubkrehel/skills
@@ -25,7 +26,6 @@ improve-animations	emilkowalski/skills
 improve-codebase-architecture	mattpocock/skills
 improve-react	millionco/react-doctor
 interface-review	jakubkrehel/skills
-migrate-radix-to-base	shadcn/ui
 performance	addyosmani/web-quality-skills
 pick-ui-library	emilkowalski/skills
 prototype	emilkowalski/skills

@@ -2,6 +2,33 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-04 - removed migrate-radix-to-base
+
+Removed `migrate-radix-to-base` (`shadcn/ui`), added on 2026-10-02. `shadcn` stays.
+
+Backup: `~/ai-config-backups/removal-20261004-230548`.
+
+## 2026-10-04 - blast-radius works outside Cursor, dropped the handoffs rule
+
+`blast-radius` no longer depends on pstack's `how`, `why` and `arena`, which exist only in
+Cursor. The history step now names the git and `gh` commands directly, and the multi-model
+step spawns sub-agents instead of an arena. Also dropped "Solid versus React", left over
+from the source it was adapted from.
+
+Removed the `~/handoffs/` convention from `AGENTS.md`, `cursor-user-rule.txt`, the README
+and `bootstrap.sh`. It contradicted the `handoff` skill, which saves to the OS temp
+directory. Existing files in `~/handoffs/` were left in place.
+
+## 2026-10-04 - added better-accessibility
+
+Installed `better-accessibility` from `jakubkrehel/skills` via the CLI. It was left out on
+2026-08-26 for competing with addyosmani's `accessibility` on the same triggers. Today's
+update cut its description to one generic line, while `accessibility` keeps its explicit
+trigger phrases. Direct a11y requests should still reach `accessibility`, and
+`better-accessibility` mostly runs as the owner that `better-interface` and
+`interface-review` route to. Those reviews no longer report accessibility as
+`Not reviewed`; UI polish still is, since `better-ui` stays out.
+
 ## 2026-10-04 - replaced break with break-ui, removed grill-me
 
 Replaced jakubkrehel's `break` with Emil Kowalski's `break-ui` from `emilkowalski/skills`,

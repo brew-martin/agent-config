@@ -7,10 +7,6 @@ Cursor is the exception: its global rules are app config, not a file, so this co
 pasted by hand into Cursor's Customize panel > Rules > User Rules. Re-paste it when this
 file changes.
 
-## Conventions
-
-- Handoff documents go in `~/handoffs/<slug>.md`. Not the workspace, not `$TMPDIR`.
-
 ## Skills that must be asked for
 
 These cannot start themselves. Suggest them at the moments below rather than waiting to
