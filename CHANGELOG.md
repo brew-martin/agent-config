@@ -2,6 +2,15 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-04 - removed rams
+
+Deleted the `/rams` command. `bootstrap.sh` no longer fetches it from rams.ai, so its
+commands step is gone and `curl` is no longer a prerequisite. Accessibility review is
+covered by `accessibility` and `better-accessibility`; visual review by the `better-*`
+skills and `/web-interface-guidelines`.
+
+Backup: `~/ai-config-backups/removal-20261004-231033`.
+
 ## 2026-10-04 - removed migrate-radix-to-base
 
 Removed `migrate-radix-to-base` (`shadcn/ui`), added on 2026-10-02. `shadcn` stays.

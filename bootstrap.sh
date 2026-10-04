@@ -15,7 +15,7 @@ ok()  { printf '  ✓ %s\n' "$1"; }
 no()  { printf '  ✗ %s\n' "$1"; fail=1; }
 
 say "1. Prerequisites"
-for c in git node npx curl; do
+for c in git node npx; do
   command -v "$c" >/dev/null && ok "$c" || no "$c is required"
 done
 [ "$fail" = "1" ] && { echo; echo "Install the missing tools and re-run."; exit 1; }
@@ -46,12 +46,7 @@ while IFS=$'\t' read -r name source; do
 done < "$POOL/skills.manifest"
 echo "  $n skill(s) present"
 
-say "3. Commands not stored in this repo"
-# rams is fetched from source; skills.sh does not manage commands.
-curl -fsSL https://rams.ai/rams.md -o "$POOL/commands/rams.md" \
-  && ok "rams.md fetched from rams.ai" || no "could not fetch rams.md"
-
-say "4. Global instructions"
+say "3. Global instructions"
 mkdir -p "$HOME/.claude" "$HOME/.codex"
 printf '<!-- Canonical instructions live in ~/.agents/AGENTS.md. Edit that file, not this one. -->\n\n@~/.agents/AGENTS.md\n' > "$HOME/.claude/CLAUDE.md"
 ok "~/.claude/CLAUDE.md (import stub - Claude Code does not read AGENTS.md natively)"
@@ -60,7 +55,7 @@ ok "~/.codex/AGENTS.md -> pool"
 echo "  ! Cursor global rules are app config, not a file."
 echo "    Paste ~/.agents/AGENTS.md into Customize > Rules > User Rules by hand."
 
-say "5. Link everything into the tools"
+say "4. Link everything into the tools"
 "$POOL/sync.sh"
 
 say "Done"

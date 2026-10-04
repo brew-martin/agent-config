@@ -7,7 +7,7 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
       AGENTS.md        global instructions  -> Claude Code, Codex
       cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
       skills/          38 skill dirs        -> Claude Code, Cursor, Codex
-      commands/         5 command files     -> Claude Code, Cursor (symlink), Codex (copy)
+      commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
       sync.sh          idempotent linker
       bootstrap.sh     rebuild on a new machine
@@ -181,9 +181,9 @@ while sitting in one directory is invisible everywhere else.
 
 The CLI manages skills only. Commands have no lockfile entry and are not covered by
 `npx skills update`. Update them by re-fetching the source file into
-`~/.agents/commands/` and running `sync.sh`. For example:
+`~/.agents/commands/` and running `sync.sh`:
 
-    curl -fsSL https://rams.ai/rams.md -o ~/.agents/commands/rams.md
+    curl -fsSL <source-url> -o ~/.agents/commands/<name>.md
     ~/.agents/sync.sh
 
 ## New machine
@@ -195,7 +195,7 @@ and rebuilt from `skills.manifest`.
     ~/.agents/bootstrap.sh
 
 `bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a
-`skillFolderHash` and stays updatable), fetches `rams.md` from source, writes the global instruction files, and runs `sync.sh`.
+`skillFolderHash` and stays updatable), writes the global instruction files, and runs `sync.sh`.
 Idempotent - re-run any time to repair drift.
 
 After bootstrap, one manual step remains: paste `AGENTS.md` into Cursor's Customize panel
