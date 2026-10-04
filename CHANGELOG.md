@@ -2,6 +2,25 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-04 - replaced break with break-ui, removed grill-me
+
+Replaced jakubkrehel's `break` with Emil Kowalski's `break-ui` from `emilkowalski/skills`,
+installed via the CLI. `break` was manual-only; `break-ui` fires on its own, so it left the
+`AGENTS.md` table and the Cursor user rule.
+
+Removed `grill-me`. It was a one-line alias for `grilling`, which already fires on any
+"grill" phrase.
+
+Ran `npx skills check -g`, which in CLI 1.5.23 applies updates rather than only listing
+them. 20 skills updated. Invocation flags were unchanged. `domain-modeling` now writes
+`GLOSSARY.md` instead of `CONTEXT.md`.
+
+Backup: `~/ai-config-backups/removal-20261004-223822`.
+
+Comment Sicko no longer calls pstack's `how` and `why` skills, which exist only in Cursor.
+It checks a comment's justification itself: callers and the pinned dependency for how,
+`git blame` and the originating commit or PR for why.
+
 ## 2026-10-02 - added shadcn and migrate-radix-to-base
 
 Installed both skills from `shadcn/ui` via the CLI, so they have lockfile entries and stay

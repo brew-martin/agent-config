@@ -27,7 +27,6 @@ be asked.
 | Exploring what a piece of UI should look like | `prototype` |
 | Reviewing animation or motion code | `review-animations` |
 | Reviewing a change's interface quality rather than its correctness | `interface-review` |
-| Checking whether one component survives real content | `break` |
 | Asking how an interface you can see was built | `explain-interface` |
 
 Everything else in `~/.agents/skills/` fires on its own when it matches.

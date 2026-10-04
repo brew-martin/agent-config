@@ -7,7 +7,7 @@ better-interface	jakubkrehel/skills
 better-layout	jakubkrehel/skills
 better-typography	jakubkrehel/skills
 better-writing	jakubkrehel/skills
-break	jakubkrehel/skills
+break-ui	emilkowalski/skills
 codebase-design	mattpocock/skills
 core-web-vitals	addyosmani/web-quality-skills
 deslop	millionco/react-doctor
@@ -17,7 +17,6 @@ explain-interface	jakubkrehel/skills
 find-animation-opportunities	emilkowalski/skills
 find-similar-functions	millionco/react-doctor
 frontend-design	anthropics/skills
-grill-me	mattpocock/skills
 grill-with-docs	mattpocock/skills
 grilling	mattpocock/skills
 handoff	mattpocock/skills
