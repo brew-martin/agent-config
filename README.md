@@ -6,8 +6,8 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
       cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
-      skills/          38 skill dirs        -> Claude Code, Cursor, Codex
-      commands/         3 command files     -> Claude Code, Cursor (symlink), Codex (copy)
+      skills/          37 skill dirs        -> Claude Code, Cursor, Codex
+      commands/         2 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
       sync.sh          idempotent linker
       bootstrap.sh     rebuild on a new machine

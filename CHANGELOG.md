@@ -2,6 +2,19 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-04 - removed web-interface-guidelines and performance
+
+Deleted the `/web-interface-guidelines` command. It was a 2026-01-20 snapshot with no
+update path, never run in Claude Code, and it could fire on its own against
+`better-interface`, which now covers the same ground with `better-accessibility`.
+
+Removed `performance` (`addyosmani/web-quality-skills`). Never run in Claude Code, and its
+rendering path, image, font and caching sections overlap `core-web-vitals`, which stays.
+
+Usage was counted from Claude Code and Codex history only; Cursor use was not measured.
+
+Backup: `~/ai-config-backups/removal-20261004-232107`.
+
 ## 2026-10-04 - removed rams
 
 Deleted the `/rams` command. `bootstrap.sh` no longer fetches it from rams.ai, so its
