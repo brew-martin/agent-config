@@ -3,9 +3,9 @@
 Canonical file: `~/.agents/AGENTS.md`. Symlinked to `~/.codex/AGENTS.md` and imported by
 `~/.claude/CLAUDE.md`, so those tools read this one file. Edit it here.
 
-Cursor is the exception: its global rules are app config, not a file, so this content is
-pasted by hand into Cursor's Customize panel > Rules > User Rules. Re-paste it when this
-file changes.
+Cursor is the exception: its global rules are app config, not a file. `sync.sh` flattens
+this file into `cursor-user-rule.txt`, which is pasted by hand into Cursor's Customize
+panel > Rules > User Rules. Re-paste it when `sync.sh` says it changed.
 
 ## Skills that must be asked for
 

@@ -2,6 +2,21 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-05 - added check.sh, cursor-user-rule.txt is now generated
+
+`check.sh` catches the drift the audit found by hand: names of skills, commands and agents
+that do not exist, an `AGENTS.md` table out of step with the manual-only skills, and
+vendored skills edited locally or missing from the lockfile. It runs at the end of every
+`sync.sh`. Unresolved references inside vendored skills are warnings; known ones are
+accepted in its `ALLOW` list. Tested against a copy of the pool with nine planted faults;
+it reported all nine.
+
+It found one thing still open: `deslop`'s "consolidate duplicates with truffler" step has
+never worked here, because `truffler` is not installed in any project. Accepted in `ALLOW`.
+
+`sync.sh` now generates `cursor-user-rule.txt` from `AGENTS.md`, so it can no longer drift.
+It says when the file changed and needs re-pasting into Cursor.
+
 ## 2026-10-05 - README and bootstrap brought up to date
 
 - The Cursor paste step in the README's "New machine" section and in `bootstrap.sh` now
