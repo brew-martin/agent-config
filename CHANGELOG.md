@@ -2,6 +2,15 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-05 - accessibility back to upstream, jev-a11y dropped
+
+Removed the local pointer to `/jev-a11y` from `accessibility`, added 2026-09-22. jev-a11y
+was experimental and its skill was no longer linked into the pool, so the line pointed at a
+command that did not exist. `accessibility` now matches its upstream tree hash, leaving
+no edited vendored skills. Local skills remain `blast-radius` and `comment-sweep`.
+
+Backup: `~/ai-config-backups/edit-20261005-110339`.
+
 ## 2026-10-05 - blast-radius no longer linked into Cursor
 
 pstack now ships its own `blast-radius`, the skill ours was adapted from, so Cursor had two
