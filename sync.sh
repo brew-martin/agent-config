@@ -17,6 +17,16 @@ TOOLS=(
 # manifest records what we put there so stale files can be removed without
 # touching anything the user added by hand.
 COPY_TARGETS=("$HOME/.codex/prompts:commands")
+# Pool entries a tool must not get, as "<tool dir>:<layer>/<name>". Cursor gets
+# blast-radius from the pstack plugin; linking ours as well gives it two skills
+# with the same name.
+EXCLUDE=("$HOME/.cursor:skills/blast-radius")
+
+excluded() {
+  local e
+  for e in "${EXCLUDE[@]+"${EXCLUDE[@]}"}"; do [ "$e" = "$1:$2" ] && return 0; done
+  return 1
+}
 
 link_layer() {
   local src="$POOL/$1" tooldir="$2" layer="$1"
@@ -33,6 +43,12 @@ link_layer() {
     [ -e "$entry" ] || continue
     local name; name=$(basename "$entry")
     local target="$dest/$name"
+    if excluded "$tooldir" "$layer/$name"; then
+      if [ -L "$target" ] && [ "$(readlink "$target")" = "$entry" ]; then
+        rm "$target"; echo "  - excluded $layer/$name"
+      fi
+      continue
+    fi
     if [ -L "$target" ]; then
       [ "$(readlink "$target")" = "$entry" ] || { rm "$target"; ln -s "$entry" "$target"; echo "  ~ $layer/$name"; }
     elif [ -e "$target" ]; then

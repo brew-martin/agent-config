@@ -2,6 +2,13 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-05 - blast-radius no longer linked into Cursor
+
+pstack now ships its own `blast-radius`, the skill ours was adapted from, so Cursor had two
+skills with the same name. `sync.sh` gained an `EXCLUDE` list and skips our
+`blast-radius` for Cursor, removing the existing link. Cursor uses pstack's version (with
+`why`, `arena` and `unslop`); Claude Code and Codex keep ours.
+
 ## 2026-10-04 - removed find-similar-functions
 
 Removed `find-similar-functions` (`millionco/react-doctor`). It came from that repo's own

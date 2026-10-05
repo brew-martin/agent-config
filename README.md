@@ -127,6 +127,11 @@ clone instead, and `npx skills update` leaves them alone.
 
 Current: `blast-radius`, `comment-sweep`.
 
+`blast-radius` is not linked into Cursor. The pstack plugin ships its own `blast-radius`
+there, which ours was adapted from, and two skills with one name is ambiguous. `EXCLUDE`
+in `sync.sh` holds this list; add `"<tool dir>:<layer>/<name>"` to keep any other pool
+entry out of one tool.
+
 An installed agent is not dormant: its name and description are registered as a selectable
 agent type in every session. Cheap (one line), but the model can choose it unprompted -
 there is no `disable-model-invocation` equivalent for agents.
