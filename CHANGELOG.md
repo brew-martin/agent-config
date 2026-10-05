@@ -2,6 +2,19 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-05 - README and bootstrap brought up to date
+
+- The Cursor paste step in the README's "New machine" section and in `bootstrap.sh` now
+  names `cursor-user-rule.txt`, not `AGENTS.md`, matching the rest of the README.
+- The sub-agent example names `comment-sweep`; `no-comments` is long gone.
+- "Things that are not ours" drops the stale Cursor built-in counts and adds the pstack
+  plugin and `~/.claude/skills/synced/`.
+- The install-by-hand list matches what `bootstrap.sh` checks: `pnpm` removed.
+- Updating warns that `npx skills check -g` applies updates.
+
+Deleted `CONTEXT.md`. It was a glossary for `/clearer` only, and `clearer.md` already
+defines each of its terms.
+
 ## 2026-10-05 - accessibility back to upstream, jev-a11y dropped
 
 Removed the local pointer to `/jev-a11y` from `accessibility`, added 2026-09-22. jev-a11y

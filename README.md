@@ -38,6 +38,9 @@ stays updatable:
 
 Then run `sync.sh` and commit `skills.manifest` if it changed.
 
+`npx skills check -g` is not a dry run. In CLI 1.5.23 it applies every available update,
+the same as `update`. There is no read-only way to list pending updates.
+
 Every skill must have a `skillFolderHash` in `.skill-lock.json`. Without one the updater
 skips it and reports "Private or deleted repo", which is misleading - the repo is usually
 fine. Hand-written lockfile entries cause this. Fix by reinstalling through the CLI.
@@ -114,7 +117,7 @@ Prints the skill's SKILL.md wrapped in instructions, ready to paste. Nothing is 
 or linked. Better than installing and hoping - try it, and only add it to the pool if you
 reach for it twice.
 
-Note it does NOT bring any sub-agent the skill spawns. `no-comments`, for example, needs
+Note it does NOT bring any sub-agent the skill spawns. `comment-sweep`, for example, needs
 the `Comment Sicko` agent, which is kept in `agents/` for that reason.
 
 ## Locally authored skills
@@ -178,8 +181,12 @@ while sitting in one directory is invisible everywhere else.
 ## Things that are not ours
 
 - `~/.cursor/skills-cursor/` - Cursor's own built-ins. Auto-managed via
-  `.sync-manifest.json`; 6 are `builtinSkillIds` and 3 are `managedSkillIds`, so Cursor
-  recreates them if deleted. Leave alone.
+  `.sync-manifest.json`, so Cursor recreates them if deleted. Leave alone.
+- `~/.cursor/plugins/` - Cursor plugins, including pstack, which brings its own skills
+  (`how`, `why`, `arena`, `unslop`, its own `blast-radius`). Never vendor these into the
+  pool; see `EXCLUDE` in `sync.sh` for name clashes.
+- `~/.claude/skills/synced/` - skills synced from claude.ai (docs, pdf, xlsx and others).
+  A real directory, not a pool link; `sync.sh` leaves it alone.
 - `~/.codex/skills/.system/` - OpenAI's bundled system skills.
 
 ## Commands are not tracked by skills.sh
@@ -200,17 +207,18 @@ and rebuilt from `skills.manifest`.
     ~/.agents/bootstrap.sh
 
 `bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a
-`skillFolderHash` and stays updatable), writes the global instruction files, and runs `sync.sh`.
-Idempotent - re-run any time to repair drift.
+`skillFolderHash` and stays updatable), writes the global instruction files, and runs
+`sync.sh`. Idempotent - re-run any time to repair drift.
 
-After bootstrap, one manual step remains: paste `AGENTS.md` into Cursor's Customize panel
-> Rules > User Rules.
+After bootstrap, one manual step remains: paste `cursor-user-rule.txt` into Cursor's
+Customize panel > Rules > User Rules.
 
 `skills.manifest` is regenerated automatically by `sync.sh` from `.skill-lock.json`, so it
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds
 a stale set.
 
-Not reproduced by bootstrap, install by hand: gh, cursor-agent, node, pnpm. bootstrap reports which are missing.
+Not reproduced by bootstrap, install by hand: node, gh, cursor-agent. bootstrap stops if
+node is missing and warns about the other two.
 
 Per-repo `AGENTS.md` files live in their own repos and travel with git.
 
