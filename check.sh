@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Check the pool for drift that sync.sh cannot repair. Read-only.
+# Check the pool for drift that sync.sh cannot repair. Read-only, apart from keeping
+# .skill-hashes, its record of each vendored skill as installed (machine-local, gitignored).
 #
 #   1. References: skill, command and agent names cited in pool files must exist.
 #   2. AGENTS.md table: must list exactly the manual-only skills.
@@ -103,6 +104,9 @@ for s in sorted(set(lock) & local_skills):
     errors.append(f"skills/{s}: committed as local but also in the lockfile - pick one")
 
 vendored = sorted((set(lock) & skills) - local_skills)
+RECORD = ".skill-hashes"
+recorded = json.load(open(RECORD)) if os.path.exists(RECORD) else {}
+record = dict(recorded)
 tmp = tempfile.mkdtemp()
 try:
     subprocess.run(["git", "init", "-q", tmp], check=True)
@@ -115,11 +119,22 @@ try:
         want = lock[s].get("skillFolderHash")
         if not want:
             errors.append(f".skill-lock.json: `{s}` has no skillFolderHash - reinstall through the CLI")
-        elif git("-C", tmp, "rev-parse", f"{root}:{s}").strip() != want:
+            continue
+        # skillFolderHash is the upstream folder's hash, which covers files the CLI does not
+        # install, so it cannot be compared with what is on disk. Compare against our own
+        # record of the installed tree instead, re-taken whenever the CLI changes the lock.
+        tree = git("-C", tmp, "rev-parse", f"{root}:{s}").strip()
+        seen = record.get(s)
+        if seen is None or seen["lock"] != want:
+            record[s] = {"lock": want, "tree": tree}
+        elif seen["tree"] != tree:
             errors.append(f"skills/{s}: edited locally - the next update overwrites it; "
                           "fork it as a local skill or reinstall")
 finally:
     shutil.rmtree(tmp)
+record = {s: record[s] for s in vendored if s in record}
+if record != recorded:
+    json.dump(record, open(RECORD, "w"), indent=1, sort_keys=True)
 
 # Report ----------------------------------------------------------------------------------
 print("== check ==")

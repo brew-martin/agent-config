@@ -58,5 +58,5 @@ say "4. Link everything into the tools"
 
 say "Done"
 echo "  Verify:  npx $SKILLS_CLI list"
-echo "  Update:  npx $SKILLS_CLI update -g -y   (skills only; commands are manual)"
+echo "  Update:  ~/.agents/update.sh   (skills only; commands are manual)"
 [ "$fail" = "1" ] && exit 1 || exit 0

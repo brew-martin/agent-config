@@ -2,6 +2,24 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-06 - added update.sh, tested bootstrap, fixed check.sh's edit detection
+
+`update.sh` wraps `npx skills update`: backup first, then a report of added, removed and
+changed skills, with old and new descriptions and any `disable-model-invocation` change,
+then `sync.sh`. Updates no longer land unseen.
+
+Ran `bootstrap.sh` end to end in a throwaway `HOME` cloned from the repo. It rebuilt all 36
+skills, linked them into Claude Code, Cursor (without `blast-radius`) and Codex, and left
+git clean, so the generated manifest and Cursor rule match what is committed.
+
+That run showed `check.sh` reporting six freshly installed skills as edited locally. The
+lockfile's `skillFolderHash` is the upstream folder hash, which covers files the CLI does
+not install, so it cannot be compared with the disk. `check.sh` now keeps its own record of
+each installed tree in `.skill-hashes` (gitignored) and compares against that.
+
+Tested in the same throwaway `HOME`: fresh install passes, a planted edit is caught, an
+update reports a description and flag change, and a no-op update removes its backup.
+
 ## 2026-10-05 - added check.sh, cursor-user-rule.txt is now generated
 
 `check.sh` catches the drift the audit found by hand: names of skills, commands and agents
