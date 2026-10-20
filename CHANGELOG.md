@@ -2,6 +2,33 @@
 
 Chronological record of changes to this pool.
 
+## 2026-10-20 - added modern-web-guidance, chrome-extensions and good-css
+
+`modern-web-guidance` (GoogleChrome/modern-web-guidance) is a search over Chrome's guides
+to platform features: dialogs, popovers, anchor positioning, view transitions, forms and
+autofill, passkeys, Trusted Types, scheduling and fetch priority, and others. It fetches
+guides with `npx modern-web-guidance search|retrieve` at run time, so it needs network
+access, and it ends each answer that used it with a `### Modern Web Guidance` section.
+
+`chrome-extensions` comes from the same repo. It covers Manifest V3 extensions and
+publishing to the Chrome Web Store, and only fires on extension work.
+
+`good-css` (vojtaholik/good-css) is a fixed set of CSS techniques that hold for any
+authoring system: logical properties, `oklch()`, `clamp()` scales, hover behind
+`(hover: hover)`, `overflow: clip`, and others. It hands motion decisions to Emil's skills.
+
+Both fire on their own across nearly all frontend work. Neither replaces a pool skill.
+Their overlap is in rules, not in jobs: the `better-*` skills, `accessibility` and
+`emil-design-eng` already agree with them on focus, reduced motion, logical properties
+and hover. Two tensions to keep in mind:
+
+- good-css says to write colors in `oklch()`. `better-colors` says to keep a codebase's
+  existing notation. In a hex codebase, follow `better-colors` unless a migration is in
+  scope.
+- modern-web-guidance prefers native platform features over dependencies. `pick-ui-library`
+  recommends libraries for OTP inputs, drag and drop, sliders and similar. Check the
+  native guide first, and use the library where the native feature falls short.
+
 ## 2026-10-06 - added update.sh, tested bootstrap, fixed check.sh's edit detection
 
 `update.sh` wraps `npx skills update`: backup first, then a report of added, removed and

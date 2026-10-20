@@ -9,6 +9,7 @@ better-layout	jakubkrehel/skills
 better-typography	jakubkrehel/skills
 better-writing	jakubkrehel/skills
 break-ui	emilkowalski/skills
+chrome-extensions	GoogleChrome/modern-web-guidance
 codebase-design	mattpocock/skills
 core-web-vitals	addyosmani/web-quality-skills
 deslop	millionco/react-doctor
@@ -17,6 +18,7 @@ emil-design-eng	emilkowalski/skills
 explain-interface	jakubkrehel/skills
 find-animation-opportunities	emilkowalski/skills
 frontend-design	anthropics/skills
+good-css	vojtaholik/good-css
 grill-with-docs	mattpocock/skills
 grilling	mattpocock/skills
 handoff	mattpocock/skills
@@ -25,6 +27,7 @@ improve-animations	emilkowalski/skills
 improve-codebase-architecture	mattpocock/skills
 improve-react	millionco/react-doctor
 interface-review	jakubkrehel/skills
+modern-web-guidance	GoogleChrome/modern-web-guidance
 pick-ui-library	emilkowalski/skills
 prototype	emilkowalski/skills
 review-animations	emilkowalski/skills
