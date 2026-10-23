@@ -7,9 +7,9 @@ on; the user decides whether to run it.
 
 | Moment | Skill |
 |---|---|
-| A change could break code outside its diff: a migration, a removal, a wide refactor, or a small diff you don't fully trust | `blast-radius` |
+| A change could break code outside its diff: a migration, a removal, or a wide refactor | `blast-radius` |
 | The user lays out a plan or design and wants it built | `grill-with-docs` |
-| The user says they're stopping with work unfinished, or the context is nearly full | `handoff` |
+| The user says they're stopping with work unfinished | `handoff` |
 | Files or a diff are thick with redundant comments or lint suppressions | `comment-sweep` |
 | The user asks where code should live, or a change keeps hitting shallow modules or logic scattered across files | `improve-codebase-architecture` |
 | About to add a frontend dependency, or to hand-roll something a library covers, such as charts, OTP inputs, toasts, or drag and drop | `pick-ui-library` |
@@ -21,8 +21,7 @@ on; the user decides whether to run it.
 ## File references
 
 Write file links as full paths from the workspace root (`src/features/auth/LoginForm.tsx:42`)
-or as absolute paths. Viewers resolve links against the workspace root, so the path has
-to be complete from there.
+or as absolute paths, because viewers resolve links from there.
 
 ## T3 Code tools
 
@@ -33,5 +32,5 @@ When the `t3-code` MCP tools are available:
   traces and heap snapshots.
 - When a site needs a login, ask the user to sign in in the built-in browser; the Default
   profile keeps the session. Passwords are entered by the user only.
-- When you finish a UI change, record it working with `preview_recording_start` /
-  `preview_recording_stop` and embed the video in your reply.
+- When a change that alters UI is finished, record it working with
+  `preview_recording_start` / `preview_recording_stop` and embed the video in your reply.
