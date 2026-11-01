@@ -10,6 +10,7 @@ TOOLS=(
   "$HOME/.claude:skills commands agents"
   "$HOME/.cursor:skills commands agents"
   "$HOME/.codex:skills"          # codex reads skills as symlinks
+  "$HOME/.copilot:skills"        # Copilot CLI (and T3 Code via Copilot) reads personal skills here
 )
 # Tools that need COPIES rather than symlinks, as "<dir>:<pool-layer>".
 # Codex does not load symlinked prompts (openai/codex#3637), so commands are
