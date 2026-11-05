@@ -5,7 +5,7 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
-      skills/          48 skill dirs        -> Claude Code, Cursor, Codex
+      skills/          44 skill dirs        -> Claude Code, Cursor, Codex
       commands/         2 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
       sync.sh          idempotent linker; also regenerates the manifest
@@ -218,6 +218,29 @@ The CLI manages skills only. Commands have no lockfile entry and are not covered
     curl -fsSL <source-url> -o ~/.agents/commands/<name>.md
     ~/.agents/sync.sh
 
+## Lighthouse CLI
+
+Lighthouse is an automated page auditor, not a skill. It checks accessibility,
+performance, SEO and best practices, then produces HTML or JSON reports. Keep
+`better-accessibility` for interpreting accessibility failures and checking keyboard,
+focus and screen-reader behavior; a perfect automated score is not WCAG conformance.
+
+Install the CLI separately from the skill pool, with Google Chrome available:
+
+    npm install -g lighthouse
+    lighthouse --version
+
+Run an accessibility audit against a running local app, with reports outside the repo:
+
+    lighthouse http://localhost:3000 --only-categories=accessibility \
+      --chrome-flags="--headless" --no-enable-error-reporting \
+      --output=html --output=json --output-path=/tmp/lighthouse-accessibility
+
+This writes `/tmp/lighthouse-accessibility.report.html` and
+`/tmp/lighthouse-accessibility.report.json`. Omit `--only-categories` for the default
+audit categories. The CLI launches a separate Chrome session, so it does not inherit
+the built-in browser's login. Never point it at your everyday browser profile.
+
 ## New machine
 
 This directory is a git repo. Skills are NOT committed - they are vendored from upstream
@@ -234,8 +257,9 @@ and rebuilt from `skills.manifest`.
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds
 a stale set.
 
-Not reproduced by bootstrap, install by hand: node, gh, cursor-agent. bootstrap stops if
-node is missing and warns about the other two.
+Not reproduced by bootstrap, install by hand: node, gh, cursor-agent, and optionally
+Lighthouse plus Google Chrome for page audits. Bootstrap stops if node is missing and
+warns when gh, cursor-agent or lighthouse is missing.
 
 Per-repo `AGENTS.md` files live in their own repos and travel with git.
 

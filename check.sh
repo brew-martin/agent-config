@@ -19,8 +19,6 @@ os.chdir(pool)
 # Unresolved references that are known and accepted, as (skill dir, name): reason.
 # "*" matches any skill dir. An entry that stops matching is reported as stale.
 ALLOW = {
-    ("improve-react", "react-doctor"): "a disclaimer naming a skill it is not",
-    ("deslop", "find-similar-functions"): "truffler step; truffler is not installed, so deslop falls back to plain search",
     ("writing-for-agents", "model-invoked"): "a term, not a skill",
     ("writing-for-agents", "user-invoked"): "a term, not a skill",
 }

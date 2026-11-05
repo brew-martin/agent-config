@@ -2,6 +2,18 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-05 - removed four skills, added Lighthouse CLI guidance
+
+Removed `improve-react`, `deslop`, `animation-vocabulary` and `accessibility` from the
+pool and tool links. The pool now has 44 skills. Kept `apple-design` and
+`better-accessibility`; the latter is the default accessibility skill.
+
+Dropped the obsolete `improve-react` and `deslop` exceptions from `check.sh`. Installed
+the standalone Lighthouse CLI for automated page audits, documented HTML/JSON report
+commands in the README, and added an optional-tool warning to bootstrap.
+
+Backup: `~/ai-config-backups/remove-four-skills-20261105-224102`.
+
 ## 2026-11-05 - dropped the Cursor user rule
 
 `sync.sh` no longer flattens `AGENTS.md` into `cursor-user-rule.txt`, and the file is gone.
