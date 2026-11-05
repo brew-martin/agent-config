@@ -9,7 +9,6 @@ on; the user decides whether to run it.
 |---|---|
 | A change could break code outside its diff: a migration, a removal, or a wide refactor | `blast-radius` |
 | The user lays out a plan or design and wants it built | `grill-with-docs` |
-| The user says they're stopping with work unfinished | `handoff` |
 | Files or a diff are thick with redundant comments or lint suppressions | `comment-sweep` |
 | The user asks where code should live, or a change keeps hitting shallow modules or logic scattered across files | `improve-codebase-architecture` |
 | About to add a frontend dependency, or to hand-roll something a library covers, such as charts, OTP inputs, toasts, or drag and drop | `pick-ui-library` |

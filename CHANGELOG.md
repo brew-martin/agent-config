@@ -2,6 +2,30 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-05 - added animate, choreograph, remove-animations, animation-performance and mobile-native
+
+From emilkowalski/skills, installed with the CLI. All five fire on their own; none goes
+in the AGENTS.md table.
+
+- `animate` builds new motion, choosing in order whether to animate, the tool, the
+  properties, curve and duration, interruption and exit. The pool had review, audit and
+  opportunity skills for motion, but nothing that writes it.
+- `choreograph` coordinates several elements that move together: staggers, entrances,
+  view swaps, multi-step flows.
+- `remove-animations` only takes motion away. It is the opposite of
+  `find-animation-opportunities`.
+- `animation-performance` covers frame budget, composite-only properties, CSS vs WAAPI vs
+  rAF, and `will-change`.
+- `mobile-native` applies CSS and meta-tag fixes that make a web app feel installed on a
+  phone. It overlaps `good-css` and `modern-web-guidance` on `(hover: hover)` and `dvh`.
+
+Not taken from that repo: `animate-expo` (React Native), `write-swift` and `ask-sonner`.
+
+## 2026-11-05 - removed handoff
+
+T3 Code now does handoffs itself. Nothing in the pool referenced the skill, and session
+logs show it was only loaded while maintaining the pool, never in real work.
+
 ## 2026-11-05 - added council, file-pr, babysit-pr and leaving-pr-comments
 
 From t3dotgg/tstack.
