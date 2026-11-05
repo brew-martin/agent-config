@@ -5,11 +5,10 @@ into every tool. Edit here; every tool sees it immediately. No copying, no sync 
 
     ~/.agents/
       AGENTS.md        global instructions  -> Claude Code, Codex
-      cursor-user-rule.txt  same, flattened  -> pasted into Cursor by hand
       skills/          48 skill dirs        -> Claude Code, Cursor, Codex
       commands/         2 command files     -> Claude Code, Cursor (symlink), Codex (copy)
       agents/           2 sub-agents        -> Claude Code, Cursor
-      sync.sh          idempotent linker; also regenerates the manifest and Cursor rule
+      sync.sh          idempotent linker; also regenerates the manifest
       check.sh         drift checks, run at the end of every sync.sh
       update.sh        update vendored skills and report what changed
       bootstrap.sh     rebuild on a new machine
@@ -120,13 +119,9 @@ An import stub is used rather than a symlink so Claude-specific lines can be add
 alongside the shared ones if ever needed.
 
 **Cursor's global rules are not a file.** They live in Cursor's Customize panel > Rules >
-User Rules, stored in app config, so they cannot be symlinked here. Set the scope dropdown
-to your own name, then `+ New`.
-
-That input is a single-line style field, so the `AGENTS.md` table does not survive it.
-`cursor-user-rule.txt` holds the same content flattened to one paragraph - paste that file
-verbatim. **It is generated:** `sync.sh` rebuilds it from `AGENTS.md` on every run, so never
-edit it by hand. When it changes, `sync.sh` says so; re-paste it then.
+User Rules, stored in app config, so they cannot be symlinked here and this pool does not
+manage them. Cursor sessions run through T3 Code would not see them anyway: T3 Code starts
+Cursor SDK agents with `settingSources: ["project", "plugins"]`, so the user layer is off.
 
 Per-repo `AGENTS.md` still works underneath, read natively by the Cursor CLI and IDE
 alongside `.cursor/rules`, and stacks with the user rule rather than replacing it.
@@ -234,9 +229,6 @@ and rebuilt from `skills.manifest`.
 `bootstrap.sh` checks prerequisites, reinstalls every skill through the CLI (so each gets a
 `skillFolderHash` and stays updatable), writes the global instruction files, and runs
 `sync.sh`. Idempotent - re-run any time to repair drift.
-
-After bootstrap, one manual step remains: paste `cursor-user-rule.txt` into Cursor's
-Customize panel > Rules > User Rules.
 
 `skills.manifest` is regenerated automatically by `sync.sh` from `.skill-lock.json`, so it
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds

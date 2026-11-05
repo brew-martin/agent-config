@@ -2,6 +2,11 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-05 - dropped the Cursor user rule
+
+`sync.sh` no longer flattens `AGENTS.md` into `cursor-user-rule.txt`, and the file is gone.
+Cursor's global User Rules are no longer managed from this pool.
+
 ## 2026-11-05 - added animate, choreograph, remove-animations, animation-performance and mobile-native
 
 From emilkowalski/skills, installed with the CLI. All five fire on their own; none goes

@@ -115,36 +115,6 @@ PYEOF
   fi
 fi
 
-# Cursor's User Rules field is single-line, so AGENTS.md is flattened into
-# cursor-user-rule.txt for pasting. Generated so it cannot drift; pasting stays manual.
-before=$(cat "$POOL/cursor-user-rule.txt" 2>/dev/null || true)
-python3 - "$POOL" <<'PYEOF'
-import os, re, sys
-pool = sys.argv[1]
-text = open(os.path.join(pool, "AGENTS.md")).read()
-body = text[text.index("\n## "):]          # the preamble is about the file itself, not rules
-clean = lambda s: re.sub(r"\s+", " ", s.replace("`", "").replace("**", "")).strip()
-lower_first = lambda s: s if re.match(r"[A-Z]{2,}", s) else s[:1].lower() + s[1:]
-parts = ["Global agent instructions, generated from ~/.agents/AGENTS.md by sync.sh."
-         " Edit that file, run sync.sh, then re-paste here."]
-for block in re.split(r"\n\s*\n", body.strip()):
-    lines = block.strip().splitlines()
-    if lines[0].startswith("#"):
-        parts.append(clean(lines[0].lstrip("#")) + ".")
-    elif lines[0].startswith("|"):
-        rows = [[clean(c) for c in l.strip().strip("|").split("|")] for l in lines[2:]]
-        parts.append("; ".join(f"{r[-1]} ({lower_first(r[0])})" for r in rows) + ".")
-    elif lines[0].startswith("- "):
-        parts.append("; ".join(clean(l[2:]).rstrip(".") for l in lines if l.startswith("- ")) + ".")
-    else:
-        parts.append(clean(" ".join(lines)))
-open(os.path.join(pool, "cursor-user-rule.txt"), "w").write(" ".join(parts) + "\n")
-PYEOF
-if [ "$before" != "$(cat "$POOL/cursor-user-rule.txt")" ]; then
-  echo "== cursor rule =="
-  echo "  ~ cursor-user-rule.txt regenerated - re-paste it into Cursor > Rules > User Rules"
-fi
-
 "$POOL/check.sh" || echo "  check found problems - fix the errors above"
 
 echo "done."

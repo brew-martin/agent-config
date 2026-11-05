@@ -50,8 +50,6 @@ printf '<!-- Canonical instructions live in ~/.agents/AGENTS.md. Edit that file,
 ok "~/.claude/CLAUDE.md (import stub - Claude Code does not read AGENTS.md natively)"
 ln -sfn "$POOL/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ok "~/.codex/AGENTS.md -> pool"
-echo "  ! Cursor global rules are app config, not a file."
-echo "    Paste ~/.agents/cursor-user-rule.txt into Customize > Rules > User Rules by hand."
 
 say "4. Link everything into the tools"
 "$POOL/sync.sh"
