@@ -18,6 +18,12 @@ on; the user decides whether to run it.
 | A change that alters UI is finished or up for review | `interface-review` |
 | The user shares a URL or screenshot and asks how it was built | `explain-interface` |
 
+## Council members
+
+When `council` runs, seat the newest flagship from each of these providers: Claude Opus,
+GPT Sol (through Copilot or Cursor) and Gemini Pro or Argon (through Copilot, else Cursor).
+Antigravity offers only Gemini Flash, so do not seat Gemini through it.
+
 ## File references
 
 Write file links as full paths from the workspace root (`src/features/auth/LoginForm.tsx:42`)

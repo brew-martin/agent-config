@@ -2,6 +2,28 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-05 - added council, file-pr, babysit-pr and leaving-pr-comments
+
+From t3dotgg/tstack.
+
+`council` fires when the user says "council". It runs one review delegate on each of three
+providers, in parallel through `delegate_task`, and repeats until all three are satisfied,
+scoring each round out of 10. AGENTS.md names the members: Claude Opus, GPT Sol, and
+Gemini through Copilot (or Cursor). Gemini CLI is disabled in T3 Code and Antigravity
+offers only Gemini Flash, so neither is used for it. Unlike `/second-opinion` (one model, run by hand, through cursor-agent), council can
+start itself and loops.
+
+`file-pr` writes a PR description that opens with the problem and ends with a
+model/harness line. `babysit-pr` waits with T3's `watch_pull_request`, or with its
+`scripts/pr-wait` (Python, calls only `gh`) everywhere else, and fixes real CI and
+review-bot findings. Both use `leaving-pr-comments`, which marks every comment an agent
+posts with a 🤖 note.
+
+Not taken: `full-send`/`full-stop` and the `sol-loop` they need, which overlap council and
+`/second-opinion`; also `takeover` and `modernize`.
+
+Also dropped the stale `better-ui` ALLOW entry from check.sh, since better-ui is installed.
+
 ## 2026-10-20 - added modern-web-guidance, chrome-extensions and good-css
 
 `modern-web-guidance` (GoogleChrome/modern-web-guidance) is a search over Chrome's guides

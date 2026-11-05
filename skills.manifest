@@ -2,6 +2,7 @@
 accessibility	addyosmani/web-quality-skills
 animation-vocabulary	emilkowalski/skills
 apple-design	emilkowalski/skills
+babysit-pr	t3dotgg/tstack
 better-accessibility	jakubkrehel/skills
 better-colors	jakubkrehel/skills
 better-interface	jakubkrehel/skills
@@ -13,10 +14,12 @@ break-ui	emilkowalski/skills
 chrome-extensions	GoogleChrome/modern-web-guidance
 codebase-design	mattpocock/skills
 core-web-vitals	addyosmani/web-quality-skills
+council	t3dotgg/tstack
 deslop	millionco/react-doctor
 domain-modeling	mattpocock/skills
 emil-design-eng	emilkowalski/skills
 explain-interface	jakubkrehel/skills
+file-pr	t3dotgg/tstack
 find-animation-opportunities	emilkowalski/skills
 frontend-design	anthropics/skills
 good-css	vojtaholik/good-css
@@ -28,6 +31,7 @@ improve-animations	emilkowalski/skills
 improve-codebase-architecture	mattpocock/skills
 improve-react	millionco/react-doctor
 interface-review	jakubkrehel/skills
+leaving-pr-comments	t3dotgg/tstack
 modern-web-guidance	GoogleChrome/modern-web-guidance
 pick-ui-library	emilkowalski/skills
 prototype	emilkowalski/skills
