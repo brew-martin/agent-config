@@ -33,8 +33,11 @@ or as absolute paths, because viewers resolve links from there.
 When the `t3-code` MCP tools are available:
 
 - Do all browser work in the built-in browser: `preview_open`, then `preview_snapshot` to
-  read the page. Playwright and chrome-devtools are for Lighthouse audits, performance
-  traces and heap snapshots.
+  read the page, `preview_evaluate` for anything page JavaScript can read. chrome-devtools
+  covers only what the built-in browser lacks: performance traces, heap snapshots, CPU or
+  network throttling, media-feature emulation (reduced motion, contrast, forced colors),
+  mobile emulation (touch, pixel ratio, user agent) and network inspection. Lighthouse
+  audits run from the CLI in the README.
 - When a site needs a login, ask the user to sign in in the built-in browser; the Default
   profile keeps the session. Passwords are entered by the user only.
 - When a change that alters UI is finished, record it working with

@@ -2,6 +2,19 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-12 - removed the Playwright MCP server, narrowed chrome-devtools
+
+Removed the `Playwright` server from `~/.claude.json` and `~/.cursor/mcp.json`, and the
+`--headless` flag from chrome-devtools in `~/.claude.json`. Agents were opening Playwright
+windows that took focus and asked for logins instead of using T3's built-in browser.
+chrome-devtools covers the media emulation Playwright offered, apart from print media.
+
+The `AGENTS.md` browser rule now lists exactly what chrome-devtools is for (traces, heap
+snapshots, throttling, media and mobile emulation, network inspection); everything else
+goes to the built-in browser. Lighthouse runs from its CLI.
+
+Backup: `~/ai-config-backups/remove-playwright-mcp-20261112-101726`.
+
 ## 2026-11-05 - removed four skills, added Lighthouse CLI guidance
 
 Removed `improve-react`, `deslop`, `animation-vocabulary` and `accessibility` from the
