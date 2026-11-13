@@ -31,8 +31,8 @@ Any safety fact you can't get to step 4, say so out loud. Don't write it up as s
 1. Read the change. The diff, the symbols it adds, changes, and deletes, and what it now does differently, including the part the diff doesn't spell out. Pull the history behind it: `git log --oneline -- <file>` for the commits, `git blame -L` on the changed lines, and `gh pr view <number>` for the PR when `gh` is there.
 2. Find the one fact it's safe because of. Most changes that look scary are safe because of a single fact, like "this call only drops already-dead cache entries and does nothing else". Find that fact. If it holds, most of the scary cases die at once. Spend your time here, not on a long list of maybes.
 3. Look where grep stops. Read the source of the library you call, and check its pinned version and any local patch. Work out when things run: microtasks, unmount and teardown, the framework's render and effect order. Follow what a symbol search misses: the JSON an API returns, a DB column, a wire format, another language reading the same bytes, a feature flag, code three hops downstream.
-4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Keep the risks you confirmed; list the ones you checked and cleared separately. Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
-5. Prove the one fact. Write a script or test that runs the real code, run it, and paste what happened. If you can't prove it cheaply, mark it unproven. Don't round up.
+4. Be honest about each risk. Give it a real chance of happening and a real cost if it does. Sort each risk as confirmed, cleared (you checked and it's fine), or unchecked (plausible, but you couldn't reach it, like a consumer outside the repo). Cite a real `file:line`, a search that finds nothing is still an answer, and never make up a caller or an API.
+5. Prove the one fact. Write a script or test that runs the real code against a test database or local stubs, never live data or services, run it, and paste what happened. Say which inputs the run covered and what it took on trust, like a stub behaving as the real service does. The fact is proven only if the run covers the whole claim. If you can't prove it cheaply or safely, mark it unproven. Don't round up.
 6. For a big or wide change, spawn two or three sub-agents with the same question, on different models where the tool allows, and merge the answers. Different models catch different real bugs. Without sub-agents, skip this step and say so.
 
 ## What to hand back
@@ -41,6 +41,7 @@ Any safety fact you can't get to step 4, say so out loud. Don't write it up as s
 - **The one fact it's safe because of.** State it, say which step you got it to, and show the proof. If you couldn't prove it, write unproven.
 - **Risks.** Only the real ones. Each names how it breaks, the `file:line`, how likely and how bad, and how to check. Paste the proof for the ones that matter.
 - **Cleared.** What you checked and why it's fine.
+- **Unchecked.** Plausible risks you couldn't reach, why, and what would settle each.
 - **Before you merge.** The cheapest test or repro that catches the real bug, including the script you wrote.
 
 Write in plain, concrete English. Lead with the safety fact, keep one name for each concept, cite real code, and strip anything private before it goes anywhere public.
