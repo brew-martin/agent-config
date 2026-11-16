@@ -241,6 +241,31 @@ This writes `/tmp/lighthouse-accessibility.report.html` and
 audit categories. The CLI launches a separate Chrome session, so it does not inherit
 the built-in browser's login. Never point it at your everyday browser profile.
 
+## Shared agent Chrome
+
+One long-running Google Chrome that every agent attaches to, so sign-ins persist and no
+session pays for a cold browser start. It listens on `http://127.0.0.1:9222` with its own
+profile at `~/.cache/agent-chrome/profile`, separate from your everyday Chrome. Any local
+process can drive it, so sign it in only to sites agents need.
+
+- `bin/agent-chrome` starts it (`run`), starts it if it is down (`ensure`), prints its
+  version (`status`), and is the chrome-devtools MCP command (`mcp`) in `~/.claude.json`
+  and `~/.cursor/mcp.json`. The pinned chrome-devtools-mcp version and its `--workspace`
+  folders live in the script.
+- `launchd/com.martinsherwood.agent-chrome.plist` starts it at login, with no window until
+  an agent opens a page, and restarts it if it crashes. Quitting it is fine; the next agent
+  session starts it again. To sign it in to a site, click its Dock icon for a window.
+- Scripts attach with Playwright's `chromium.connectOverCDP('http://127.0.0.1:9222')`.
+  `browser.close()` there only disconnects.
+
+Install on a new machine:
+
+    ln -s ~/.agents/bin/agent-chrome ~/.local/bin/agent-chrome
+    cp ~/.agents/launchd/com.martinsherwood.agent-chrome.plist ~/Library/LaunchAgents/
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.martinsherwood.agent-chrome.plist
+
+The plist is copied, not linked, because launchd can skip linked plists at login.
+
 ## New machine
 
 This directory is a git repo. Skills are NOT committed - they are vendored from upstream
@@ -257,8 +282,8 @@ and rebuilt from `skills.manifest`.
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds
 a stale set.
 
-Not reproduced by bootstrap, install by hand: node, gh, cursor-agent, and optionally
-Lighthouse plus Google Chrome for page audits. Bootstrap stops if node is missing and
+Not reproduced by bootstrap, install by hand: node, gh, cursor-agent, the shared agent
+Chrome (above), and optionally Lighthouse plus Google Chrome for page audits. Bootstrap stops if node is missing and
 warns when gh, cursor-agent or lighthouse is missing.
 
 Per-repo `AGENTS.md` files live in their own repos and travel with git.

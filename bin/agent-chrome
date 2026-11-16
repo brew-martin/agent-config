@@ -1,0 +1,62 @@
+#!/bin/zsh
+# The shared agent Chrome: one long-running Chrome that every agent session attaches to, so
+# sign-ins persist and no agent pays for a cold browser start. launchd starts it at login
+# (~/Library/LaunchAgents/com.martinsherwood.agent-chrome.plist).
+#
+#   agent-chrome run      start Chrome in the foreground (what launchd runs)
+#   agent-chrome ensure   start it if it is not answering, and wait until it is
+#   agent-chrome mcp ...  ensure, then run chrome-devtools-mcp attached to it (MCP command)
+#   agent-chrome status   print the browser version, or fail
+#
+# Scripts attach with Playwright's chromium.connectOverCDP('http://127.0.0.1:9222').
+set -euo pipefail
+
+PORT=9222
+URL="http://127.0.0.1:$PORT"
+PROFILE="$HOME/.cache/agent-chrome/profile"
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+LABEL="com.martinsherwood.agent-chrome"
+DEVTOOLS_MCP="chrome-devtools-mcp@1.13.0"
+
+up() { curl -sf -m 1 "$URL/json/version" >/dev/null 2>&1; }
+
+case "${1:-}" in
+  run)
+    up && exit 0
+    mkdir -p "$PROFILE"
+    exec "$CHROME" \
+      --remote-debugging-port="$PORT" \
+      --user-data-dir="$PROFILE" \
+      --no-first-run \
+      --no-default-browser-check \
+      --no-startup-window \
+      --window-size=1440,900
+    ;;
+  ensure)
+    up && exit 0
+    if ! launchctl kickstart "gui/$(id -u)/$LABEL" >/dev/null 2>&1; then
+      nohup "$0" run >/dev/null 2>&1 &!
+    fi
+    for _ in {1..75}; do up && exit 0; sleep 0.2; done
+    echo "agent-chrome: nothing answering on $URL" >&2
+    exit 1
+    ;;
+  mcp)
+    shift
+    "$0" ensure
+    exec npx -y "$DEVTOOLS_MCP" \
+      --browserUrl "$URL" \
+      --workspace "${TMPDIR:-/tmp}" \
+      --workspace /private/tmp \
+      --workspace "$HOME/.t3" \
+      --workspace "$HOME/Documents/Projects" \
+      "$@"
+    ;;
+  status)
+    curl -sf -m 1 "$URL/json/version" | sed -n 's/.*"Browser": *"\([^"]*\)".*/\1/p'
+    ;;
+  *)
+    echo "usage: agent-chrome run|ensure|mcp|status" >&2
+    exit 2
+    ;;
+esac

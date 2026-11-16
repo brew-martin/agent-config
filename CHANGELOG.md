@@ -2,6 +2,24 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-15 - added the shared agent Chrome and a browser fallback rule
+
+Added `bin/agent-chrome` and `launchd/com.martinsherwood.agent-chrome.plist`: one
+long-running Chrome on port 9222 with its own profile (`~/.cache/agent-chrome/profile`,
+cloned from the old chrome-devtools profile). chrome-devtools in `~/.claude.json` and
+`~/.cursor/mcp.json` now runs `agent-chrome mcp`, which attaches to it with a pinned
+`chrome-devtools-mcp@1.13.0` and `--workspace` folders, so screenshots can be saved to
+session scratch folders. Before, each session launched its own Chrome on one shared
+profile, so concurrent sessions collided, and throwaway Playwright scripts opened a
+logged-out Chrome for Testing every time.
+
+`AGENTS.md` gains a Shared agent Chrome section (scripts attach over CDP), a fallback
+rule (a failing built-in browser call gets one retry, then chrome-devtools for that step
+only), and a 1440×900 viewport before recordings. Prompted by a thread that moved to
+chrome-devtools for good after the built-in browser's screenshot timed out twice.
+
+Backup: `~/ai-config-backups/shared-agent-chrome-20261115-221625`.
+
 ## 2026-11-12 - removed the Playwright MCP server, narrowed chrome-devtools
 
 Removed the `Playwright` server from `~/.claude.json` and `~/.cursor/mcp.json`, and the

@@ -28,6 +28,14 @@ Antigravity offers only Gemini Flash, so do not seat Gemini through it.
 Write file links as full paths from the workspace root (`src/features/auth/LoginForm.tsx:42`)
 or as absolute paths, because viewers resolve links from there.
 
+## Shared agent Chrome
+
+chrome-devtools and every browser script share one long-running Chrome at
+`http://127.0.0.1:9222` (`agent-chrome` in the README), whose profile keeps sign-ins.
+Scripts attach with Playwright's `chromium.connectOverCDP('http://127.0.0.1:9222')` and
+close only the pages they opened. When a site there needs a login, ask the user to sign in
+in that window. A project's own Playwright test suite runs with its own config.
+
 ## T3 Code tools
 
 When the `t3-code` MCP tools are available:
@@ -38,7 +46,12 @@ When the `t3-code` MCP tools are available:
   network throttling, media-feature emulation (reduced motion, contrast, forced colors),
   mobile emulation (touch, pixel ratio, user agent) and network inspection. Lighthouse
   audits run from the CLI in the README.
+- chrome-devtools is also the fallback for one step. When a built-in browser call fails,
+  retry it once (after `preview_wait_for`, or a snapshot without the image); if it fails
+  again, do that step in chrome-devtools, say so, and return to the built-in browser for
+  the next step.
 - When a site needs a login, ask the user to sign in in the built-in browser; the Default
   profile keeps the session. Passwords are entered by the user only.
-- When a change that alters UI is finished, record it working with
-  `preview_recording_start` / `preview_recording_stop` and embed the video in your reply.
+- When a change that alters UI is finished, set the viewport to 1440×900 with
+  `preview_resize`, record it working with `preview_recording_start` /
+  `preview_recording_stop` and embed the video in your reply.
