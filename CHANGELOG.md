@@ -2,6 +2,12 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-18 - AGENTS.md points GitHub comments at leaving-pr-comments
+
+`AGENTS.md` gains a GitHub comments section telling agents to load `leaving-pr-comments`
+before posting to GitHub. The skill fires from its description, but a comment posted
+straight through `gh` or the API could skip it; the line makes the load explicit.
+
 ## 2026-11-18 - one browser section, recordings on request, Lighthouse via chrome-devtools
 
 `AGENTS.md` merges Shared agent Chrome and the browser half of T3 Code tools into one

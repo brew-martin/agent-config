@@ -28,6 +28,11 @@ Antigravity offers only Gemini Flash, so do not seat Gemini through it.
 Write file links as full paths from the workspace root (`src/features/auth/LoginForm.tsx:42`)
 or as absolute paths, because viewers resolve links from there.
 
+## GitHub comments
+
+Load `leaving-pr-comments` before posting any comment, review or reply to GitHub,
+including through `gh` or the API.
+
 ## Browsers
 
 Do browser work in T3's built-in browser whenever the `t3-code` tools are available:
