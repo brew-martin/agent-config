@@ -2,11 +2,18 @@
 
 Chronological record of changes to this pool.
 
-## 2026-11-18 - AGENTS.md points GitHub comments at leaving-pr-comments
+## 2026-11-18 - AGENTS.md points GitHub comments at leaving-pr-comments, recasts council
 
 `AGENTS.md` gains a GitHub comments section telling agents to load `leaving-pr-comments`
 before posting to GitHub. The skill fires from its description, but a comment posted
 straight through `gh` or the API could skip it; the line makes the load explicit.
+
+Council members are now Claude Opus 5.5, the newest GPT Sol (Copilot has 6.2, Cursor
+5.6) and Muse Wonder (Cursor only; T3's Muse Code provider is disabled). Gemini Carbon is
+the red team: it returns only concrete failure cases, each reproduced by Opus 5.5 before
+it is acted on, since Gemini models hallucinate. It runs non-blocking and is left out of
+the bar for ending the council. A hidden-jester role was tried first and dropped, since
+an identical brief only bought a fourth review whose verdict was then ignored.
 
 ## 2026-11-18 - one browser section, recordings on request, Lighthouse via chrome-devtools
 

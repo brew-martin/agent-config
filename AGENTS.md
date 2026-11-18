@@ -19,9 +19,15 @@ on; the user decides whether to run it.
 
 ## Council members
 
-When `council` runs, seat the newest flagship from each of these providers: Claude Opus,
-GPT Sol (through Copilot or Cursor) and Gemini Pro or Argon (through Copilot, else Cursor).
-Antigravity offers only Gemini Flash, so do not seat Gemini through it.
+When `council` runs, seat three members: Claude Opus 5.5, the newest GPT Sol through
+Copilot (else Cursor), and Muse Wonder through Cursor.
+
+Also seat Gemini Carbon, through Copilot, else Cursor, as the red team. Brief it to break
+the change and return only failure cases it can state precisely: an input, a sequence of
+steps, or a failing test. Before any fix, have Opus 5.5 reproduce each case; fix only
+those it confirms and drop the rest. It is non-blocking and gives no score, so the
+council is done when the three members are satisfied. In the PR table, its row shows the
+failures reproduced in each round.
 
 ## File references
 
