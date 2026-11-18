@@ -2,6 +2,23 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-18 - one browser section, recordings on request, Lighthouse via chrome-devtools
+
+`AGENTS.md` merges Shared agent Chrome and the browser half of T3 Code tools into one
+Browsers section. The built-in browser stays the default. Recording a finished UI change
+is now offered in one line instead of done every time, which had clashed with T3's own
+rule against opening its browser unasked. Scripts are told `chromium.launch()` is off
+limits. Sign-ins are stated to stay in the browser they were made in, so a chrome-devtools
+fallback step on a signed-in site asks for a login there too.
+
+`agent-chrome mcp` opens `about:blank` when the shared Chrome has no page, since
+chrome-devtools-mcp stumbles on a pageless browser and Chrome starts windowless.
+
+Lighthouse audits now go through chrome-devtools' `lighthouse_audit`; the README's CLI
+instructions and bootstrap's lighthouse check are gone.
+
+Backup: `~/ai-config-backups/browser-routing-20261118-102138`.
+
 ## 2026-11-15 - added the shared agent Chrome and a browser fallback rule
 
 Added `bin/agent-chrome` and `launchd/com.martinsherwood.agent-chrome.plist`: one

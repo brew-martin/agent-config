@@ -24,8 +24,6 @@ done
 command -v gh   >/dev/null && ok "gh" || echo "  ! gh missing - GitHub-based workflows will not run"
 command -v cursor-agent >/dev/null && ok "cursor-agent (needed by /second-opinion)" \
   || echo "  ! cursor-agent missing - /second-opinion will not run"
-command -v lighthouse >/dev/null && ok "lighthouse" \
-  || echo "  ! lighthouse missing - optional page audits need npm install -g lighthouse and Chrome"
 
 say "2. Skills"
 # Installed through the CLI, one --skill per run: comma lists are silently ignored.

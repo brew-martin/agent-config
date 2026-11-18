@@ -44,6 +44,9 @@ case "${1:-}" in
   mcp)
     shift
     "$0" ensure
+    # chrome-devtools-mcp stumbles when the browser has no page, and Chrome starts windowless.
+    curl -sf -m 2 "$URL/json/list" | grep -q '"type": *"page"' \
+      || curl -sf -m 2 -X PUT "$URL/json/new?about:blank" >/dev/null || true
     exec npx -y "$DEVTOOLS_MCP" \
       --browserUrl "$URL" \
       --workspace "${TMPDIR:-/tmp}" \

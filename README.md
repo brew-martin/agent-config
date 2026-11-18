@@ -218,28 +218,13 @@ The CLI manages skills only. Commands have no lockfile entry and are not covered
     curl -fsSL <source-url> -o ~/.agents/commands/<name>.md
     ~/.agents/sync.sh
 
-## Lighthouse CLI
+## Lighthouse
 
 Lighthouse is an automated page auditor, not a skill. It checks accessibility,
-performance, SEO and best practices, then produces HTML or JSON reports. Keep
-`better-accessibility` for interpreting accessibility failures and checking keyboard,
+performance, SEO and best practices. Run it through chrome-devtools' `lighthouse_audit`
+tool, which audits in the shared agent Chrome (below), so it sees that browser's sign-ins.
+Keep `better-accessibility` for interpreting accessibility failures and checking keyboard,
 focus and screen-reader behavior; a perfect automated score is not WCAG conformance.
-
-Install the CLI separately from the skill pool, with Google Chrome available:
-
-    npm install -g lighthouse
-    lighthouse --version
-
-Run an accessibility audit against a running local app, with reports outside the repo:
-
-    lighthouse http://localhost:3000 --only-categories=accessibility \
-      --chrome-flags="--headless" --no-enable-error-reporting \
-      --output=html --output=json --output-path=/tmp/lighthouse-accessibility
-
-This writes `/tmp/lighthouse-accessibility.report.html` and
-`/tmp/lighthouse-accessibility.report.json`. Omit `--only-categories` for the default
-audit categories. The CLI launches a separate Chrome session, so it does not inherit
-the built-in browser's login. Never point it at your everyday browser profile.
 
 ## Shared agent Chrome
 
@@ -283,8 +268,8 @@ cannot drift. When it changes, `sync.sh` says so - commit it, or the next machin
 a stale set.
 
 Not reproduced by bootstrap, install by hand: node, gh, cursor-agent, the shared agent
-Chrome (above), and optionally Lighthouse plus Google Chrome for page audits. Bootstrap stops if node is missing and
-warns when gh, cursor-agent or lighthouse is missing.
+Chrome (above). Bootstrap stops if node is missing and warns when gh or cursor-agent is
+missing.
 
 Per-repo `AGENTS.md` files live in their own repos and travel with git.
 
