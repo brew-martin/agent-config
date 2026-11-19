@@ -41,6 +41,11 @@ including through `gh` or the API.
 
 ## Browsers
 
+Check a change with the project's own browser tests when it has them, such as a Playwright
+`e2e/` folder or Pest browser tests: add or update a test that shows the change, and run
+the suite. Open a browser for what a test can't show, such as how a page looks, or when
+the user asks.
+
 Do browser work in T3's built-in browser whenever the `t3-code` tools are available:
 `preview_open`, then `preview_snapshot` to read the page, `preview_evaluate` for anything
 page JavaScript can read. Without them, chrome-devtools is the browser.

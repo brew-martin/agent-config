@@ -2,6 +2,15 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-19 - browser tests before a browser
+
+The Browsers section in `AGENTS.md` opens with checking a change through the project's
+own browser tests when it has them: add or update a test that shows the change, then run
+the suite. A browser is for what a test can't show, or when the user asks. Agents had
+been clicking through pages by hand to check their work, which left nothing behind and
+went wrong in a different way for each agent; PM Bible's suite (signed in once, its own
+database, Argos screenshots in CI) is the first project this applies to.
+
 ## 2026-11-18 - AGENTS.md points GitHub comments at leaving-pr-comments, recasts council
 
 `AGENTS.md` gains a GitHub comments section telling agents to load `leaving-pr-comments`
