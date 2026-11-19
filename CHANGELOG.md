@@ -2,6 +2,16 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-19 - typing into cross-site iframes goes to chrome-devtools
+
+The Browsers section in `AGENTS.md` gains an exception: a flow that types into a
+cross-site iframe runs in chrome-devtools from its first step, with no retry. The
+built-in browser only types into such a frame while the user has its pane focused, and
+an agent can't give it focus, so the one-retry fallback always failed. Both Jira Forge
+sessions since the 18 November rewrite (`jira-resource-planner`, `brew-resource-planner`)
+hit it, up to 16 times in one session, and after switching they kept going back to the
+built-in browser and failing again, ending with 52 and 85 chrome-devtools calls.
+
 ## 2026-11-19 - browser tests before a browser
 
 The Browsers section in `AGENTS.md` opens with checking a change through the project's

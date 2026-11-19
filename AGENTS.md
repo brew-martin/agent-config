@@ -58,6 +58,10 @@ page JavaScript can read. Without them, chrome-devtools is the browser.
   retry it once (after `preview_wait_for`, or a snapshot without the image); if it fails
   again, do that step in chrome-devtools, say so, and return to the built-in browser for
   the next step.
+- Typing into a cross-site iframe, such as a Forge app inside Jira, needs the user's focus
+  on the built-in browser's pane and fails with "focus is inside a cross-site frame". Run
+  any flow that types into such a frame in chrome-devtools from its first step, with no
+  retry, and say so. Return to the built-in browser once that flow is done.
 - chrome-devtools and every browser script share one long-running Chrome at
   `http://127.0.0.1:9222` (`agent-chrome` in the README). Scripts attach with Playwright's
   `chromium.connectOverCDP('http://127.0.0.1:9222')` and close only the pages they
