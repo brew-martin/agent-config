@@ -2,6 +2,16 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-20 - bootstrap removes dropped skills and reports a failed check
+
+Updating the Surface Book with `git pull && bootstrap.sh` installed the new skills but
+kept the five removed on 5 November (`handoff`, `accessibility`, `animation-vocabulary`,
+`deslop`, `improve-react`). Bootstrap only installed what was missing, so `check.sh`
+failed, and `sync.sh` rebuilt a manifest that would have restored them if committed.
+Bootstrap now removes, after a backup, any installed skill that an earlier manifest
+commit listed and the current one does not. `sync.sh` exits with `check.sh`'s status,
+and bootstrap passes it on, where before both said "done" and exited 0.
+
 ## 2026-11-20 - Gemini Neon is the council red team
 
 The council's red team in `AGENTS.md` is now Gemini Neon instead of Gemini Carbon, still

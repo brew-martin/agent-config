@@ -115,6 +115,8 @@ PYEOF
   fi
 fi
 
-"$POOL/check.sh" || echo "  check found problems - fix the errors above"
+check=0
+"$POOL/check.sh" || { check=1; echo "  check found problems - fix the errors above"; }
 
 echo "done."
+exit "$check"

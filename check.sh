@@ -23,6 +23,12 @@ ALLOW = {
     ("writing-for-agents", "user-invoked"): "a term, not a skill",
 }
 
+# Skills installed by another tool's own CLI rather than `npx skills`: no lockfile
+# entry and not committed. update.sh and bootstrap.sh keep them current.
+CLI_MANAGED = {
+    "stitch": "stitch agent-skills add --user (@google/stitch)",
+}
+
 errors, warnings = [], []
 git = lambda *a: subprocess.run(["git", *a], capture_output=True, text=True, check=True).stdout
 
@@ -91,7 +97,7 @@ for s in sorted(manual - table):
 
 # 3. Vendored skills ----------------------------------------------------------------------
 lock = json.load(open(".skill-lock.json"))["skills"] if os.path.exists(".skill-lock.json") else {}
-for s in sorted(skills - set(lock) - local_skills):
+for s in sorted(skills - set(lock) - local_skills - set(CLI_MANAGED)):
     kind = "a symlink" if os.path.islink(f"skills/{s}") else "a directory"
     errors.append(f"skills/{s}: {kind} with no lockfile entry and not committed - "
                   "install it through the CLI or commit it as a local skill")

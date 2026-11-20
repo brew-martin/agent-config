@@ -43,6 +43,45 @@ while IFS=$'\t' read -r name source; do
   fi
 done < "$POOL/skills.manifest"
 echo "  $n skill(s) present"
+# Remove skills the manifest has dropped, or every machine keeps them after a pull.
+# Only a skill an earlier manifest commit listed counts as dropped: one added through
+# the CLI here and not yet synced into the manifest was never listed, so it stays.
+# Skipped while skills.manifest has local edits, since then it is not the shared list.
+if [ -f "$POOL/.skill-lock.json" ] && git -C "$POOL" diff --quiet -- skills.manifest; then
+  backup=""
+  for name in $(python3 - "$POOL" <<'PYEOF'
+import json, os, sys
+pool = sys.argv[1]
+lock = json.load(open(os.path.join(pool, ".skill-lock.json")))["skills"]
+listed = {l.split("\t")[0] for l in open(os.path.join(pool, "skills.manifest"))
+          if l.strip() and not l.startswith("#")}
+print("\n".join(sorted(set(lock) - listed)))
+PYEOF
+  ); do
+    if [ -z "$(git -C "$POOL" log -1 --format=%h -G "^$name"$'\t' -- skills.manifest)" ]; then
+      echo "  ! $name is installed but not in skills.manifest - run sync.sh and commit the manifest"
+      continue
+    fi
+    if [ -z "$backup" ]; then
+      backup="$HOME/ai-config-backups/bootstrap-$(date +%Y%m%d-%H%M%S)"
+      mkdir -p "$backup" && cp "$POOL/.skill-lock.json" "$backup/"
+    fi
+    [ -e "$POOL/skills/$name" ] && cp -RL "$POOL/skills/$name" "$backup/"
+    if npx --yes "$SKILLS_CLI" remove "$name" -g -y </dev/null >/dev/null 2>&1 \
+       && [ ! -e "$POOL/skills/$name" ]; then
+      ok "$name removed (dropped from the manifest; backup in $backup)"
+    else
+      no "$name could not be removed (dropped from the manifest)"
+    fi
+  done
+fi
+# Skills installed by their own CLI (see CLI_MANAGED in check.sh).
+if command -v stitch >/dev/null; then
+  stitch agent-skills add --user </dev/null >/dev/null 2>&1 && ok "stitch  <- stitch agent-skills add --user" \
+    || no "stitch  <- stitch agent-skills add --user"
+else
+  echo "  ! stitch CLI missing (npm i -g @google/stitch) - /stitch skill not installed"
+fi
 
 say "3. Global instructions"
 mkdir -p "$HOME/.claude" "$HOME/.codex"
@@ -52,7 +91,7 @@ ln -sfn "$POOL/AGENTS.md" "$HOME/.codex/AGENTS.md"
 ok "~/.codex/AGENTS.md -> pool"
 
 say "4. Link everything into the tools"
-"$POOL/sync.sh"
+"$POOL/sync.sh" || fail=1
 
 say "Done"
 echo "  Verify:  npx $SKILLS_CLI list"

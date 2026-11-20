@@ -21,7 +21,15 @@ echo "== update =="
 # </dev/null: the CLI reads stdin and would otherwise wait on it.
 npx --yes "$SKILLS_CLI" update "$@" -g -y </dev/null >/dev/null
 
+# Skills installed by their own CLI (see CLI_MANAGED in check.sh).
+stitch_before=$(find "$POOL/skills/stitch" -type f -exec shasum {} + 2>/dev/null | sort | shasum || true)
+if command -v stitch >/dev/null && [ -d "$POOL/skills/stitch" ]; then
+  stitch agent-skills update </dev/null >/dev/null 2>&1 || echo "  ! stitch agent-skills update failed"
+fi
+stitch_after=$(find "$POOL/skills/stitch" -type f -exec shasum {} + 2>/dev/null | sort | shasum || true)
+
 echo "== changes =="
+[ "$stitch_before" != "$stitch_after" ] && echo "  ~ stitch (via stitch agent-skills update)"
 if python3 - "$POOL" "$backup" <<'PYEOF'
 import json, os, re, sys
 pool, backup = sys.argv[1], sys.argv[2]

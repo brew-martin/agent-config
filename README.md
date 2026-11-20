@@ -263,6 +263,16 @@ and rebuilt from `skills.manifest`.
 `skillFolderHash` and stays updatable), writes the global instruction files, and runs
 `sync.sh`. Idempotent - re-run any time to repair drift.
 
+To bring an existing machine up to date:
+
+    cd ~/.agents && git pull --ff-only && ./bootstrap.sh
+
+Bootstrap also removes a skill the manifest used to list and no longer does, after
+copying it to `~/ai-config-backups/bootstrap-*`, so a removal made on one machine reaches
+the rest. A skill that was never in the manifest is left alone with a warning, and nothing
+is removed while `skills.manifest` has uncommitted edits. Bootstrap exits non-zero when
+`check.sh` fails, and so does `sync.sh`.
+
 `skills.manifest` is regenerated automatically by `sync.sh` from `.skill-lock.json`, so it
 cannot drift. When it changes, `sync.sh` says so - commit it, or the next machine rebuilds
 a stale set.
