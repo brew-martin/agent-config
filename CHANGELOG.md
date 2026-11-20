@@ -2,6 +2,11 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-20 - Gemini Neon is the council red team
+
+The council's red team in `AGENTS.md` is now Gemini Neon instead of Gemini Carbon, still
+through Copilot, else Cursor. Its brief and the reproduce-before-fix rule are unchanged.
+
 ## 2026-11-19 - typing into cross-site iframes goes to chrome-devtools
 
 The Browsers section in `AGENTS.md` gains an exception: a flow that types into a
