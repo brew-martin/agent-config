@@ -233,13 +233,22 @@ session pays for a cold browser start. It listens on `http://127.0.0.1:9222` wit
 profile at `~/.cache/agent-chrome/profile`, separate from your everyday Chrome. Any local
 process can drive it, so sign it in only to sites agents need.
 
+- It runs headless, with extensions off. A windowed Chrome on macOS comes to the front
+  every time an agent opens a page, so script-heavy sessions kept popping windows over
+  your work, and extensions inject into every page agents check.
 - `bin/agent-chrome` starts it (`run`), starts it if it is down (`ensure`), prints its
-  version (`status`), and is the chrome-devtools MCP command (`mcp`) in `~/.claude.json`
-  and `~/.cursor/mcp.json`. The pinned chrome-devtools-mcp version and its `--workspace`
-  folders live in the script.
-- `launchd/com.martinsherwood.agent-chrome.plist` starts it at login, with no window until
-  an agent opens a page, and restarts it if it crashes. Quitting it is fine; the next agent
-  session starts it again. To sign it in to a site, click its Dock icon for a window.
+  version and mode (`status`), and is the chrome-devtools MCP command (`mcp`) in
+  `~/.claude.json` and `~/.cursor/mcp.json`. The pinned chrome-devtools-mcp version and its
+  `--workspace` folders live in the script.
+- To sign it in to a site, run `agent-chrome login <url>`: it restarts Chrome with a window
+  open at that page, with extensions on so a password manager can fill the login. Sign in
+  to the site, not to Chrome itself: a Google account in Chrome turns on sync, which pulls
+  in your extensions and sends agent browsing to your account. Then run
+  `agent-chrome headless`. Each restart closes the pages agents have open, and first
+  copies the profile's cookies and saved logins to `~/.cache/agent-chrome/backups` (the
+  last five are kept).
+- `launchd/com.martinsherwood.agent-chrome.plist` starts it at login and restarts it if it
+  crashes. Quitting it is fine; the next agent session starts it again.
 - Scripts attach with Playwright's `chromium.connectOverCDP('http://127.0.0.1:9222')`.
   `browser.close()` there only disconnects.
 

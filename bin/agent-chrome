@@ -3,34 +3,77 @@
 # sign-ins persist and no agent pays for a cold browser start. launchd starts it at login
 # (~/Library/LaunchAgents/com.martinsherwood.agent-chrome.plist).
 #
-#   agent-chrome run      start Chrome in the foreground (what launchd runs)
-#   agent-chrome ensure   start it if it is not answering, and wait until it is
-#   agent-chrome mcp ...  ensure, then run chrome-devtools-mcp attached to it (MCP command)
-#   agent-chrome status   print the browser version, or fail
+# It runs headless: a windowed Chrome on macOS comes to the front whenever an agent opens a
+# page, so every script run popped a window over whatever you were doing.
+#
+#   agent-chrome run          start Chrome in the foreground (what launchd runs)
+#   agent-chrome ensure       start it if it is not answering, and wait until it is
+#   agent-chrome mcp ...      ensure, then run chrome-devtools-mcp attached to it (MCP command)
+#   agent-chrome login [url]  restart it with a window, open url, so you can sign in
+#   agent-chrome headless     restart it headless again once you have signed in
+#   agent-chrome status       print the browser version and mode, or fail
 #
 # Scripts attach with Playwright's chromium.connectOverCDP('http://127.0.0.1:9222').
 set -euo pipefail
 
+SELF="$0"
 PORT=9222
 URL="http://127.0.0.1:$PORT"
 PROFILE="$HOME/.cache/agent-chrome/profile"
 CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 LABEL="com.martinsherwood.agent-chrome"
 DEVTOOLS_MCP="chrome-devtools-mcp@1.13.0"
+# Present while signing in: `run` starts Chrome with a window instead of headless.
+WINDOWED="$HOME/.cache/agent-chrome/windowed"
 
 up() { curl -sf -m 1 "$URL/json/version" >/dev/null 2>&1; }
+
+# Close the running Chrome cleanly so it saves its cookies, back up its sign-ins, then start
+# it again. The first switch to headless lost every cookie, cause unknown, so the last five
+# copies are kept in ~/.cache/agent-chrome/backups.
+restart() {
+  local pid ws backup
+  pid=$(lsof -ti "tcp:$PORT" -sTCP:LISTEN 2>/dev/null | head -1 || true)
+  if [[ -n $pid ]]; then
+    ws=$(curl -sf -m 1 "$URL/json/version" | sed -n 's/.*"webSocketDebuggerUrl": *"\([^"]*\)".*/\1/p')
+    [[ -n $ws ]] && node -e '
+      const w = new WebSocket(process.argv[1]);
+      w.onopen = () => w.send(JSON.stringify({ id: 1, method: "Browser.close" }));
+      w.onmessage = w.onclose = w.onerror = () => process.exit(0);
+      setTimeout(() => process.exit(0), 3000);' "$ws" || true
+    for _ in {1..100}; do kill -0 "$pid" 2>/dev/null || break; sleep 0.1; done
+    kill "$pid" 2>/dev/null || true
+    for _ in {1..50}; do kill -0 "$pid" 2>/dev/null || break; sleep 0.1; done
+  fi
+  # The profile in use is Local State's last_used: signing out of a Google Workspace account
+  # replaces Default with a fresh "Profile 1".
+  local in_use
+  in_use=$(sed -n 's/.*"last_used": *"\([^"]*\)".*/\1/p' "$PROFILE/Local State" 2>/dev/null | head -1)
+  in_use="$PROFILE/${in_use:-Default}"
+  if [[ -f $in_use/Cookies ]]; then
+    backup="$HOME/.cache/agent-chrome/backups/$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$backup"
+    cp -p "$in_use/Cookies" "$in_use/Login Data" "$backup/" 2>/dev/null || true
+  fi
+  local -a stale=("$HOME/.cache/agent-chrome/backups"/*(N/On[6,-1]))
+  (( ${#stale} )) && rm -rf -- "${stale[@]}"
+  "$SELF" ensure
+}
 
 case "${1:-}" in
   run)
     up && exit 0
     mkdir -p "$PROFILE"
+    # Extensions load only while signing in (so a password manager can fill the login);
+    # headless, agents get pages with nothing injected into them.
+    if [[ -e $WINDOWED ]]; then mode=(--no-startup-window); else mode=(--headless --disable-extensions); fi
     exec "$CHROME" \
       --remote-debugging-port="$PORT" \
       --user-data-dir="$PROFILE" \
       --no-first-run \
       --no-default-browser-check \
-      --no-startup-window \
-      --window-size=1440,900
+      --window-size=1440,900 \
+      "${mode[@]}"
     ;;
   ensure)
     up && exit 0
@@ -55,11 +98,24 @@ case "${1:-}" in
       --workspace "$HOME/Documents/Projects" \
       "$@"
     ;;
+  login)
+    mkdir -p "${WINDOWED:h}"
+    touch "$WINDOWED"
+    restart
+    curl -sf -m 5 -X PUT "$URL/json/new?${2:-about:blank}" >/dev/null
+    echo "Sign in in the Chrome window, then run: agent-chrome headless"
+    ;;
+  headless)
+    rm -f "$WINDOWED"
+    restart
+    ;;
   status)
-    curl -sf -m 1 "$URL/json/version" | sed -n 's/.*"Browser": *"\([^"]*\)".*/\1/p'
+    version=$(curl -sf -m 1 "$URL/json/version" | sed -n 's/.*"Browser": *"\([^"]*\)".*/\1/p')
+    [[ -n $version ]] || exit 1
+    if [[ -e $WINDOWED ]]; then echo "$version (windowed)"; else echo "$version (headless)"; fi
     ;;
   *)
-    echo "usage: agent-chrome run|ensure|mcp|status" >&2
+    echo "usage: agent-chrome run|ensure|mcp|login [url]|headless|status" >&2
     exit 2
     ;;
 esac

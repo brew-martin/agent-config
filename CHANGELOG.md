@@ -2,6 +2,30 @@
 
 Chronological record of changes to this pool.
 
+## 2026-11-23 - the shared agent Chrome runs headless
+
+The shared Chrome had a window, and on macOS Chrome comes to the front every time a page
+opens in it. The paper-rip session ran about 300 Playwright scripts, each opening a new
+context and so a new window, which kept popping Chrome over everything. Opening a tab in
+the default context stole focus too; only a background tab in an existing window did not.
+
+`agent-chrome run` now starts Chrome with `--headless`. `agent-chrome login [url]`
+restarts it with a window for signing in, `agent-chrome headless` switches back, and
+`status` prints the mode. Restarts close Chrome over CDP (`Browser.close`) so it saves
+its cookies, and back up `Cookies` and `Login Data` to `~/.cache/agent-chrome/backups`,
+keeping five.
+
+Headless starts also pass `--disable-extensions`. Signing Chrome itself in to Google
+turned on sync and pulled in 18 extensions, several injecting into every page, so the
+README now says to sign in to sites, not to Chrome. Signing out of that Workspace account
+made Chrome replace the `Default` profile with a fresh `Profile 1`, so the backup reads
+the profile in use from `Local State`.
+
+The first switch lost every cookie in the profile (Atlassian, Okta, OpenAI, Google and
+others), and those sites need signing in again. The cause is unknown: that restart used
+SIGTERM and Chrome updated from 157 to 158 at the same moment, but on a scratch profile
+cookies survived SIGTERM and every headless/windowed switch.
+
 ## 2026-11-20 - bootstrap removes dropped skills and reports a failed check
 
 Updating the Surface Book with `git pull && bootstrap.sh` installed the new skills but

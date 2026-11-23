@@ -70,7 +70,9 @@ page JavaScript can read. Without them, chrome-devtools is the browser.
 - Sign-ins stay in the browser they were made in: the built-in browser and the shared
   Chrome each keep their own. When a page needs a login, ask the user to sign in in the
   browser the step runs in, including before a chrome-devtools step on a site they are
-  signed in to only in the built-in browser. Passwords are entered by the user only.
+  signed in to only in the built-in browser. The shared Chrome is headless: run
+  `agent-chrome login <url>` to give it a window, and `agent-chrome headless` once the user
+  says they are signed in. Passwords are entered by the user only.
 - When a change that alters UI is finished, offer in one line to record it working. On a
   yes, set the viewport to 1440×900 with `preview_resize`, record with
   `preview_recording_start` / `preview_recording_stop` and embed the video in your reply.
